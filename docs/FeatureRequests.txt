@@ -14,9 +14,9 @@
 * Implement hocks for changes on domain objects (e.g. for ESB)
 
 
-TODO before bitbucket:
+TODO:
 * check if the verification now works with the association handle
 * implement password hashes
 * registration & login page error handling
-* localization (partly done)
+* finish localization
 * make emails like info@tüv.de working
