@@ -1,0 +1,22 @@
+* Sign Up
+* Login
+* Stateless Spring Security
+* phishing protection
+* Pluggable Persistence
+* Change Password
+* Change E-Mail
+* Forgot password
+* Last Login Date
+* Report previous failed logins
+* Double Opt-In
+* Usage Statistics
+* Monitoring with Graphit
+* Implement hocks for changes on domain objects (e.g. for ESB)
+
+
+TODO before bitbucket:
+* check if the verification now works with the association handle
+* implement password hashes
+* registration & login page error handling
+* localization (partly done)
+* make emails like info@tüv.de working

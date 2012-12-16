@@ -1,0 +1,10 @@
+body { font-family: sans-serif; background: #eee; }
+h1 {
+ color: #377BA8;
+ font-family: 'Georgia', serif;
+ margin: 0;
+ border-bottom: 2px solid #eee;
+}
+
+dd { text-align: center; border-bottom: 8px solid #eee; font-family: sans-serif }
+dt { text-align: center }

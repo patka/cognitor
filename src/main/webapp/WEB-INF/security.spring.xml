@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security.xsd">
+    
+    <security:http auto-config="false" entry-point-ref="loginUrlAuthenticationEntryPoint">
+        <security:intercept-url pattern="/registrationsuccess/**" access="ROLE_USER"/>
+        <security:intercept-url pattern="/sso/authenticate" access="ROLE_ANONYMOUS, ROLE_USER"/>
+        <security:custom-filter ref="authenticationFilter" position="FORM_LOGIN_FILTER" />
+    </security:http>
+
+    <bean id="loginUrlAuthenticationEntryPoint"
+          class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+        <constructor-arg name="loginFormUrl" value="/" />
+    </bean>
+
+    <bean id="authenticationFilter"
+          class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+        <property name="filterProcessesUrl" value="/login" />
+        <property name="usernameParameter" value="username" />
+        <property name="passwordParameter" value="password" />
+        <property name="authenticationManager" ref="authenticationManager" />
+        <property name="authenticationSuccessHandler">
+            <bean class="org.cognitor.server.openid.web.security.OpenIdAuthenticationSuccessHandler">
+                    <constructor-arg ref="openIdManager" />
+            </bean>
+        </property>
+        <property name="allowSessionCreation" value="true" />
+        <property name="authenticationFailureHandler">
+            <bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+                <property name="allowSessionCreation" value="false" />
+                <property name="defaultFailureUrl" value="/" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <property name="userDetailsService" ref="UserServiceImpl" />
+        <!--property name="passwordEncoder" -->
+    </bean>
+
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider ref="daoAuthenticationProvider" />
+    </security:authentication-manager>
+</beans>
