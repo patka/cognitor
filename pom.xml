@@ -219,6 +219,6 @@
                 </executions>
             </plugin>
         </plugins>
-        <finalName>SSOServer</finalName>
+        <finalName>cognitor</finalName>
     </build>
 </project>
