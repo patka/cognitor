@@ -3,6 +3,7 @@ package org.cognitor.server.platform.security;
 import org.cognitor.server.platform.user.domain.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>(1);
-        authorities.add(new GrantedAuthorityImpl(ROLE_USER));
+        authorities.add(new SimpleGrantedAuthority(ROLE_USER));
         return authorities;
     }
 
