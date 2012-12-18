@@ -37,7 +37,7 @@ public class OpenIdController {
         this.openIdManager = manager;
     }
 
-    @RequestMapping(value="/sso/authenticate", method={ RequestMethod.GET, RequestMethod.POST })
+    @RequestMapping(value="/sso", method={ RequestMethod.GET, RequestMethod.POST })
     public void dispatchOpenIdRequest(final HttpServletRequest request,
                                     final HttpServletResponse response,
                                     Authentication authentication) throws IOException {
@@ -65,7 +65,7 @@ public class OpenIdController {
         }
     }
 
-    @RequestMapping(value="/sso/authenticate", method=RequestMethod.HEAD)
+    @RequestMapping(value="/sso", method=RequestMethod.HEAD)
     public void sendXrdsLocation(HttpServletRequest request, HttpServletResponse response) {
         StringBuilder headerInformation = new StringBuilder(request.getRequestURL().toString());
 

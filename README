@@ -1,1 +1,7 @@
 Welcome to Cognitor
+-------------------------
+
+Cognitor is an OpenID based Single Sign On Service that can be used in web applications
+that consist of multiple applications that might at some point require a user login.
+
+Cognitor will be configurable and can be extended to support multiple user data sources.

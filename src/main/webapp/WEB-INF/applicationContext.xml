@@ -19,7 +19,7 @@
     <context:component-scan base-package="org.cognitor.server"/>
 
     <bean id="serverManager" class="org.openid4java.server.ServerManager">
-        <property name="OPEndpointUrl" value="${host.url}/sso/authenticate" />
+        <property name="OPEndpointUrl" value="${host.url}/sso" />
         <property name="userSetupUrl" value="/" />
         <property name="sharedAssociations" ref="serverAssociationStore" />
         <property name="privateAssociations" ref="serverAssociationStore" />

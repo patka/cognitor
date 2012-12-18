@@ -26,9 +26,6 @@ public class User implements Serializable {
     @NotNull
     private String password;
 
-    @Transient
-    private String repeatPassword;
-
     public User() {
     }
     
@@ -59,14 +56,6 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-    
-    public void setRepeatPassword(String repeatPassword) {
-        this.repeatPassword = repeatPassword;
-    }
-    
-    public String getRepeatPassword() {
-        return this.repeatPassword;
     }
 
     @Override

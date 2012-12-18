@@ -7,10 +7,11 @@
         http://www.springframework.org/schema/security
         http://www.springframework.org/schema/security/spring-security.xsd">
     
-    <security:http auto-config="false" entry-point-ref="loginUrlAuthenticationEntryPoint">
+    <security:http auto-config="false" entry-point-ref="loginUrlAuthenticationEntryPoint" >
         <security:intercept-url pattern="/registrationsuccess/**" access="ROLE_USER"/>
-        <security:intercept-url pattern="/sso/authenticate" access="ROLE_ANONYMOUS, ROLE_USER"/>
+        <security:intercept-url pattern="/sso" access="ROLE_ANONYMOUS, ROLE_USER"/>
         <security:custom-filter ref="authenticationFilter" position="FORM_LOGIN_FILTER" />
+        <security:logout invalidate-session="true" logout-url="/logout" logout-success-url="/" />
     </security:http>
 
     <bean id="loginUrlAuthenticationEntryPoint"
@@ -40,7 +41,6 @@
 
     <bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
         <property name="userDetailsService" ref="UserServiceImpl" />
-        <!--property name="passwordEncoder" -->
     </bean>
 
     <security:authentication-manager alias="authenticationManager">
