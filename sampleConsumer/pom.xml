@@ -2,15 +2,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.cognitor</groupId>
-    <artifactId>sampleConsumer</artifactId>
+    <artifactId>cognitor-sample-consumer</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>Sample Consumer</name>
+    <name>Cognitor Sample Consumer</name>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>3.1.3.RELEASE</spring.version>
-    </properties>
+    <parent>
+        <groupId>org.cognitor</groupId>
+        <artifactId>cognitor</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
 
     <dependencies>
         <dependency>
@@ -43,7 +44,7 @@
 
         <dependency>
             <groupId>org.openid4java</groupId>
-            <artifactId>openid4java</artifactId>
+            <artifactId>openid4java-consumer</artifactId>
             <version>0.9.6</version>
             <type>pom</type>
             <scope>compile</scope>
@@ -62,7 +63,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>${artifactId}</finalName>
+        <finalName>${project.artifactId}</finalName>
     </build>
 </project>
 
