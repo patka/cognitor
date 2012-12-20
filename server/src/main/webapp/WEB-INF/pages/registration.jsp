@@ -9,10 +9,10 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" type="text/css" href="<spring:url value="/static/css/styles.css" htmlEscape="true"/>"/>
-    <title>Registration Page</title>
+    <title><spring:message code="registration.title" htmlEscape="true"/></title>
 </head>
 <body>
-<h1 align="center">Registration Page</h1>
+<h1 align="center"><spring:message code="registration.title" htmlEscape="true"/></h1>
 
 <forms:form method="POST" modelAttribute="registrationFormBean" action="${registrationPageUrl}">
     <table align="center">
@@ -32,7 +32,7 @@
         </tr>
         <tr>
             <td colspan="2" align="right">
-                <input type="submit" value="Register" />
+                <input type="submit" value="<spring:message code="registration.signup" htmlEscape="true"/>" />
             </td>
         </tr>
     </table>

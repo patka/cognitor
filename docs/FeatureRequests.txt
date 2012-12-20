@@ -12,11 +12,10 @@
 * Usage Statistics
 * Monitoring with Graphit
 * Implement hocks for changes on domain objects (e.g. for ESB)
-
+* make emails like info@tüv.de working
 
 TODO:
-* check if the verification now works with the association handle
 * implement password hashes
 * registration & login page error handling
-* finish localization
-* make emails like info@tüv.de working
+* resolve dependency issues in spring files
+* remove hibernate and create configurable JDBC DAO
