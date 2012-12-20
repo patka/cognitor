@@ -1,6 +1,7 @@
 package org.cognitor.server.openid.web.security;
 
 import org.cognitor.server.openid.web.OpenIdManager;
+import org.cognitor.server.platform.security.UniqueKeyUserDetails;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -30,16 +31,19 @@ public class OpenIdAuthenticationSuccessHandlerTest {
     private Authentication authenticationMock;
 
     @Mock
-    private OpenIdManager openIdManager;
+    private OpenIdManager openIdManagerMock;
 
+    @Mock
+    private UniqueKeyUserDetails userDetailsMock;
 
     @Test
     public void shouldSendRedirectWhenSuccessfulLoginGiven() throws IOException, ServletException {
-        OpenIdAuthenticationSuccessHandler handler = new OpenIdAuthenticationSuccessHandler(openIdManager);
-        when(openIdManager.isOpenIdRequest(requestMock)).thenReturn(true);
-        when(authenticationMock.getName()).thenReturn("username");
+        OpenIdAuthenticationSuccessHandler handler = new OpenIdAuthenticationSuccessHandler(openIdManagerMock);
+        when(openIdManagerMock.isOpenIdRequest(requestMock)).thenReturn(true);
+        when(authenticationMock.getDetails()).thenReturn(userDetailsMock);
+        when(userDetailsMock.getUniqueKey()).thenReturn("12345");
         when(authenticationMock.isAuthenticated()).thenReturn(true);
-        when(openIdManager.getAuthenticationResponseReturnToUrl(requestMock, "username", true)).thenReturn(
+        when(openIdManagerMock.getAuthenticationResponseReturnToUrl(requestMock, "12345", true)).thenReturn(
                 "http://return.url");
 
         handler.onAuthenticationSuccess(requestMock, responseMock, authenticationMock);

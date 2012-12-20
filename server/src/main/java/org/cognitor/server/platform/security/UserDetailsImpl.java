@@ -14,7 +14,7 @@ import java.util.List;
  * User: patrick
  * Date: 26.11.12
  */
-public class UserDetailsImpl implements UserDetails {
+public class UserDetailsImpl implements UniqueKeyUserDetails {
     public static final String ROLE_USER = "ROLE_USER";
     private User user;
 
@@ -27,6 +27,11 @@ public class UserDetailsImpl implements UserDetails {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>(1);
         authorities.add(new SimpleGrantedAuthority(ROLE_USER));
         return authorities;
+    }
+
+    @Override
+    public String getUniqueKey() {
+        return this.user.getId().toString();
     }
 
     @Override
