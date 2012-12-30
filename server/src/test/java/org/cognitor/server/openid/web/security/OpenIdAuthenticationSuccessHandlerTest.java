@@ -40,7 +40,7 @@ public class OpenIdAuthenticationSuccessHandlerTest {
     public void shouldSendRedirectWhenSuccessfulLoginGiven() throws IOException, ServletException {
         OpenIdAuthenticationSuccessHandler handler = new OpenIdAuthenticationSuccessHandler(openIdManagerMock);
         when(openIdManagerMock.isOpenIdRequest(requestMock)).thenReturn(true);
-        when(authenticationMock.getDetails()).thenReturn(userDetailsMock);
+        when(authenticationMock.getPrincipal()).thenReturn(userDetailsMock);
         when(userDetailsMock.getUniqueKey()).thenReturn("12345");
         when(authenticationMock.isAuthenticated()).thenReturn(true);
         when(openIdManagerMock.getAuthenticationResponseReturnToUrl(requestMock, "12345", true)).thenReturn(
