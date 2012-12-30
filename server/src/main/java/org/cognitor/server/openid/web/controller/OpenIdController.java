@@ -3,6 +3,7 @@ package org.cognitor.server.openid.web.controller;
 import org.cognitor.server.openid.web.XrdsDocumentBuilder;
 import org.cognitor.server.openid.web.OpenIdManager;
 import org.cognitor.server.openid.web.OpenIdMode;
+import org.cognitor.server.platform.security.UniqueKeyUserDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,9 +78,11 @@ public class OpenIdController {
     private void handleCheckId(HttpServletRequest request, HttpServletResponse response,
                                Authentication authentication, OpenIdMode requestMode)
             throws IOException {
-        if (isUserAuthenticated(authentication)) {
+        if (isUserAuthenticated(authentication) && isUniqueKeyAuthentication(authentication)) {
+            String id = getUniqueId(authentication);
             response.sendRedirect(
-                    openIdManager.getAuthenticationResponseReturnToUrl(request, authentication.getName(), true));
+                    openIdManager.getAuthenticationResponseReturnToUrl(request, id, true)
+            );
         } else {
             if (OpenIdMode.CHECKID_SETUP.equals(requestMode)) {
                 response.sendRedirect(openIdManager.getLoginUrl(request));
@@ -88,6 +91,14 @@ public class OpenIdController {
                                     request.getRequestURL().toString(), false));
             }
         }
+    }
+
+    private boolean isUniqueKeyAuthentication(Authentication authentication) {
+        return UniqueKeyUserDetails.class.isAssignableFrom(authentication.getPrincipal().getClass());
+    }
+
+    private String getUniqueId(Authentication authentication) {
+        return ((UniqueKeyUserDetails) authentication.getPrincipal()).getUniqueKey();
     }
 
     private void sendDiscoveryXml(HttpServletRequest request, HttpServletResponse response)

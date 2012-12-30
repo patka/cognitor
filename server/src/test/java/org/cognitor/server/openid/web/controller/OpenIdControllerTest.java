@@ -2,6 +2,8 @@ package org.cognitor.server.openid.web.controller;
 
 import org.cognitor.server.openid.web.OpenIdManager;
 import org.cognitor.server.openid.web.OpenIdMode;
+import org.cognitor.server.platform.security.UserDetailsImpl;
+import org.cognitor.server.platform.user.domain.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.openid4java.message.AssociationResponse;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,9 +49,14 @@ public class OpenIdControllerTest {
 
     private OpenIdController controller;
 
+    private UserDetails userDetails;
+
     @Before
     public void setUp() {
         controller = new OpenIdController(openIdManagerMock);
+        User user = new User("testUser", "testPassword");
+        user.setId(1L);
+        userDetails = new UserDetailsImpl(user);
     }
 
     // ASSOCIATION
@@ -81,9 +89,9 @@ public class OpenIdControllerTest {
     @Test
     public void shouldSendSuccessfulAuthenticationResponseWhenSetupRequestForAuthenticatedUserGiven() throws IOException {
         when(authenticationMock.isAuthenticated()).thenReturn(true);
-        when(authenticationMock.getName()).thenReturn("someUser");
+        when(authenticationMock.getPrincipal()).thenReturn(userDetails);
         when(openIdManagerMock.getMode(requestMock)).thenReturn(OpenIdMode.CHECKID_SETUP);
-        when(openIdManagerMock.getAuthenticationResponseReturnToUrl(requestMock, "someUser", true)).thenReturn(
+        when(openIdManagerMock.getAuthenticationResponseReturnToUrl(requestMock, "1", true)).thenReturn(
                 "http://returnUrl");
 
         controller.dispatchOpenIdRequest(requestMock, responseMock, authenticationMock);
@@ -98,9 +106,9 @@ public class OpenIdControllerTest {
     public void shouldSendPositiveAuthenticationResponseWhenSetupRequestForAuthenticatedUserGiven()
             throws IOException {
         when(authenticationMock.isAuthenticated()).thenReturn(true);
-        when(authenticationMock.getName()).thenReturn("someUser");
+        when(authenticationMock.getPrincipal()).thenReturn(userDetails);
         when(openIdManagerMock.getMode(requestMock)).thenReturn(OpenIdMode.CHECKID_SETUP);
-        when(openIdManagerMock.getAuthenticationResponseReturnToUrl(requestMock, "someUser", true)).thenReturn(
+        when(openIdManagerMock.getAuthenticationResponseReturnToUrl(requestMock, "1", true)).thenReturn(
                 "http://positive.return.url");
 
         controller.dispatchOpenIdRequest(requestMock, responseMock, authenticationMock);
@@ -134,9 +142,9 @@ public class OpenIdControllerTest {
     public void shouldSendPositiveAuthenticationResponseWhenImmediateRequestForAuthenticatedUserGiven()
         throws IOException {
         when(authenticationMock.isAuthenticated()).thenReturn(true);
-        when(authenticationMock.getName()).thenReturn("someUser");
+        when(authenticationMock.getPrincipal()).thenReturn(userDetails);
         when(openIdManagerMock.getMode(requestMock)).thenReturn(OpenIdMode.CHECKID_IMMEDIATE);
-        when(openIdManagerMock.getAuthenticationResponseReturnToUrl(requestMock, "someUser", true)).thenReturn(
+        when(openIdManagerMock.getAuthenticationResponseReturnToUrl(requestMock, "1", true)).thenReturn(
                 "http://positive.return.url");
 
         controller.dispatchOpenIdRequest(requestMock, responseMock, authenticationMock);

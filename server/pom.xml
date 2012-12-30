@@ -193,9 +193,9 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.eclipse.jetty</groupId>
+                <groupId>org.mortbay.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.0.0.M3</version>
+                <version>8.1.5.v20120716</version>
                 <configuration>
                     <stopKey>key</stopKey>
                     <stopPort>9999</stopPort>

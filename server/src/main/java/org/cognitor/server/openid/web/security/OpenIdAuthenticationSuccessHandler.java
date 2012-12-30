@@ -26,7 +26,7 @@ public class OpenIdAuthenticationSuccessHandler implements AuthenticationSuccess
             throws IOException, ServletException {
 
         if (isOpenIdAuthentication(request, authentication)) {
-            UniqueKeyUserDetails userDetails = (UniqueKeyUserDetails) authentication.getDetails();
+            UniqueKeyUserDetails userDetails = (UniqueKeyUserDetails) authentication.getPrincipal();
             String returnUrl = this.openIdManager.getAuthenticationResponseReturnToUrl(request,
                     userDetails.getUniqueKey(),
                     authentication.isAuthenticated());
@@ -36,8 +36,8 @@ public class OpenIdAuthenticationSuccessHandler implements AuthenticationSuccess
 
     private boolean isOpenIdAuthentication(HttpServletRequest request,
             Authentication authentication) {
-        return this.openIdManager.isOpenIdRequest(request) ||
+        return this.openIdManager.isOpenIdRequest(request) &&
                 UniqueKeyUserDetails.class.isAssignableFrom(
-                        authentication.getDetails().getClass());
+                        authentication.getPrincipal().getClass());
     }
 }
