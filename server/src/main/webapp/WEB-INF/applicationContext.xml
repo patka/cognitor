@@ -45,7 +45,7 @@
     <bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="entityManagerFactory">
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="database" value="HSQL" />
+                <property name="database" value="${jpaVendorAdapter.database}" />
             </bean>
         </property>
         <property name="jpaProperties">
