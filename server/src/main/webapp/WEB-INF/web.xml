@@ -37,13 +37,18 @@
         <servlet-name>default</servlet-name>
         <url-pattern>/static/*</url-pattern>
     </servlet-mapping>
-    
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/favicon.ico</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    <!-- Measure the lenght of a request and log too long requests -->
+    <!-- Measure the length of a request and log too long requests -->
     <filter>
         <filter-name>durationFilter</filter-name>
         <filter-class>org.cognitor.server.platform.web.filter.DurationFilter</filter-class>
@@ -74,7 +79,7 @@
     </filter-mapping>
 
     <welcome-file-list>
-        <welcome-file></welcome-file>
+        <welcome-file/>
     </welcome-file-list>
 
     <session-config>

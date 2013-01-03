@@ -32,10 +32,7 @@
         </property>
         <property name="allowSessionCreation" value="true" />
         <property name="authenticationFailureHandler">
-            <bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
-                <property name="allowSessionCreation" value="false" />
-                <property name="defaultFailureUrl" value="/" />
-            </bean>
+            <bean class="org.cognitor.server.platform.web.security.RequestQueryAwareAuthenticationFailureHandler"/>
         </property>
     </bean>
 
