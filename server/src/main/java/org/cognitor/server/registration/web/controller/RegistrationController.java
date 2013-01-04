@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.cognitor.server.platform.web.util.UrlUtil.appendQueryToUrl;
 import static org.cognitor.server.platform.web.util.UrlUtil.createQueryString;
 
 /**
@@ -111,11 +112,5 @@ public class RegistrationController {
 
     private String getRegistrationPageUrl(HttpServletRequest request) {
         return appendQueryToUrl("/" + REGISTRATION_PAGE + ".html", request.getQueryString());
-    }
-
-    private String appendQueryToUrl(String urlPath, String queryParameter) {
-        StringBuilder urlBuilder = new StringBuilder(urlPath);
-        urlBuilder.append(createQueryString(queryParameter));
-        return urlBuilder.toString();
     }
 }

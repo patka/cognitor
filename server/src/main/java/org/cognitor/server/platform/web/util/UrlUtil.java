@@ -17,4 +17,16 @@ public final class UrlUtil {
         }
         return "";
     }
+
+    public static String appendQueryToUrl(String url, String queryParameter) {
+        if (!StringUtils.hasText(url)) {
+            throw new IllegalArgumentException("Need an URL to append to.");
+        }
+        if (!StringUtils.hasText(queryParameter)) {
+            return url;
+        }
+        StringBuilder urlBuilder = new StringBuilder(url);
+        urlBuilder.append(createQueryString(queryParameter));
+        return urlBuilder.toString();
+    }
 }

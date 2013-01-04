@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static junit.framework.Assert.assertEquals;
+import static org.cognitor.server.platform.web.util.UrlUtil.appendQueryToUrl;
 
 /**
  * User: patrick
@@ -29,5 +30,21 @@ public class UrlUtilTest {
     public void shouldReturnGivenQueryWithQuestionMarkPrefixedWhenQueryGiven(){
         String query = UrlUtil.createQueryString("key=value");
         assertEquals("?key=value", query);
+    }
+
+    @Test
+    public void shouldReturnUrlWithAppendedQueryWhenQueryAndUrlGiven() {
+        assertEquals("http://localhost?key=value",
+                appendQueryToUrl("http://localhost", "key=value"));
+    }
+
+    @Test
+    public void shouldReturnUrlWhenUrlAndNoQueryGiven() {
+        assertEquals("http://localhost", appendQueryToUrl("http://localhost", null));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowExceptionWhenNullValueForUrlGiven() {
+        appendQueryToUrl(null, null);
     }
 }
