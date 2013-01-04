@@ -54,7 +54,8 @@ public class RegistrationController {
         try {
             userService.registerUser(getUserFromBean(formBean));
         } catch (IllegalStateException ise) {
-            FieldError error = new FieldError("User", "email", "User already exists.");
+            FieldError error = new FieldError("User", "email",
+                    formBean.getEmail(), false, new String[] { "Exists.email" }, null, "User already exists.");
             bindingResult.addError(error);
             return createErrorView(bindingResult.getFieldErrors(), request);
         }
