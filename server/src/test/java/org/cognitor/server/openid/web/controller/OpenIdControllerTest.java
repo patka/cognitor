@@ -209,7 +209,7 @@ public class OpenIdControllerTest {
     @Test
     public void shouldSendDiscoveryDocumentWithSignOnServiceWhenRequestWithIdGiven() throws IOException {
         ByteArrayOutputStream outputStream = attachWriterToResponseMock();
-        Map parameters = new HashMap();
+        Map<String, String> parameters = new HashMap<String, String>();
         parameters.put("id", "test");
 
         when(openIdManagerMock.getMode(requestMock)).thenReturn(OpenIdMode.DISCOVERY);

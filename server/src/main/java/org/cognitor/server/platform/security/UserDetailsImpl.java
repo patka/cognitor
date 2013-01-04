@@ -2,9 +2,7 @@ package org.cognitor.server.platform.security;
 
 import org.cognitor.server.platform.user.domain.User;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;

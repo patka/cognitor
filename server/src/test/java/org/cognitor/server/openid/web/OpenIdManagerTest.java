@@ -64,12 +64,4 @@ public class OpenIdManagerTest {
         when(requestMock.getParameter(MODE)).thenReturn("checkid_immediate");
         assertEquals(OpenIdMode.CHECKID_IMMEDIATE, manager.getMode(requestMock));
     }
-
-    private HttpServletRequest attachOpenIdModeToRequestMock(String mode) {
-        Map parameters = new HashMap();
-        parameters.put(MODE, mode);
-        when(requestMock.getParameterMap()).thenReturn(parameters);
-        when(requestMock.getParameter(MODE)).thenReturn(mode);
-        return requestMock;
-    }
 }
