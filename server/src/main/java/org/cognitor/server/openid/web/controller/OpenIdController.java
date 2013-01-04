@@ -1,8 +1,8 @@
 package org.cognitor.server.openid.web.controller;
 
-import org.cognitor.server.openid.web.XrdsDocumentBuilder;
 import org.cognitor.server.openid.web.OpenIdManager;
 import org.cognitor.server.openid.web.OpenIdMode;
+import org.cognitor.server.openid.web.XrdsDocumentBuilder;
 import org.cognitor.server.platform.security.UniqueKeyUserDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

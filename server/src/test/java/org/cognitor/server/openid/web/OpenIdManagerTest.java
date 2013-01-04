@@ -8,8 +8,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.openid4java.server.ServerManager;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.cognitor.server.openid.web.OpenIdManager.MODE;
 import static org.junit.Assert.*;

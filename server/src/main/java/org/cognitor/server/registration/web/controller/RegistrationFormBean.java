@@ -5,9 +5,6 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.ReportAsSingleViolation;
-import javax.validation.constraints.NotNull;
-
 /**
  * User: patrick
  * Date: 12.12.12

@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.cognitor.server.platform.web.util.UrlUtil.appendQueryToUrl;
-import static org.cognitor.server.platform.web.util.UrlUtil.createQueryString;
 
 /**
  * @author patrick
