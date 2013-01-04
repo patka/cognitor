@@ -42,7 +42,7 @@ public class RequestQueryAwareAuthenticationFailureHandlerTest {
         when(requestMock.getContextPath()).thenReturn("http://localhost:8080");
         handler.onAuthenticationFailure(requestMock, responseMock, null);
         verify(strategyMock, atLeastOnce()).sendRedirect(requestMock,
-                responseMock, "/?key=value");
+                responseMock, "/?key=value&loginError=true");
     }
 
     @Test
@@ -51,6 +51,6 @@ public class RequestQueryAwareAuthenticationFailureHandlerTest {
         when(requestMock.getContextPath()).thenReturn("http://localhost:8080");
         handler.onAuthenticationFailure(requestMock, responseMock, null);
         verify(strategyMock, atLeastOnce()).sendRedirect(requestMock,
-                responseMock, "/");
+                responseMock, "/?loginError=true");
     }
 }

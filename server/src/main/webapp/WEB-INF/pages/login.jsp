@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
@@ -14,12 +15,17 @@
 <h1 align="center"><spring:message code="login.title" htmlEscape="true"/></h1>
 
 <form method="POST" action="${actionUrl}">
+    <core:if test="${not empty error}">
+        <div class="error">
+            <spring:message code="login.badCredentials" htmlEscape="true" />
+        </div>
+    </core:if>
     <div class="login">
         <dl>
-            <dt><spring:message code="Email" htmlEscape="true"/>:</dt>
-            <dd><input type="text" name="username"/></dd>
-            <dt><spring:message code="Password" htmlEscape="true"/>:</dt>
-            <dd><input type="password" name="password"/></dd>
+            <dt><label for="username"><spring:message code="Email" htmlEscape="true"/>:</label></dt>
+            <dd><input type="text" id="username" name="username"/></dd>
+            <dt><label for="password"><spring:message code="Password" htmlEscape="true"/>:</label></dt>
+            <dd><input type="password" id="password" name="password"/></dd>
             <dd><input type="submit" value="Login"/></dd>
         </dl>
         <div align="center">

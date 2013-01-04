@@ -8,3 +8,14 @@ h1 {
 
 dd { text-align: center; border-bottom: 8px solid #eee; font-family: sans-serif }
 dt { text-align: center }
+
+div.error {
+    text-align: center;
+}
+
+.error {
+	color: #ff0000;
+    font-family: 'Georgia', serif;
+	padding: 4px;
+	margin: 8px;
+}

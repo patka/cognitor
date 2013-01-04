@@ -3,7 +3,7 @@
 <html>
 <head>
     <title><spring:message code="registrationSuccess.title" htmlEscape="true"/></title>
-    <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="/static/styles/styles.css" />
 </head>
 <body>
 <h1><spring:message code="registrationSuccess.title" htmlEscape="true"/></h1>

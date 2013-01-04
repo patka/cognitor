@@ -36,7 +36,6 @@ public class RegistrationController {
     
     @Autowired
     private UserService userService;
-    
 
     @RequestMapping(value = "/registration")
     public ModelAndView enterPage(HttpServletRequest request) {
@@ -79,7 +78,7 @@ public class RegistrationController {
         modelAndView.addObject("errors", errors);
         return modelAndView;
     }
-    
+
     @RequestMapping(value="/", method = RequestMethod.GET)
     public ModelAndView showLogin(HttpServletRequest request) {
         Map<String, String> model = new HashMap<String, String>();
@@ -87,7 +86,14 @@ public class RegistrationController {
         model.put("registrationPageUrl", getRegistrationPageUrl(request));
         return new ModelAndView("login", model);
     }
-        
+
+    @RequestMapping(value = "/loginFailed", method = RequestMethod.GET)
+    public ModelAndView loginFailed(HttpServletRequest request) {
+        ModelAndView model = showLogin(request);
+        model.addObject("error", "login.badCredentials");
+        return model;
+    }
+
     @RequestMapping(value = "loginSuccess")
     @ResponseBody
     public String showLoginSuccessPage() {

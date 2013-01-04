@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 public class RequestQueryAwareAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
-    private static final String DEFAULT_FAILURE_URL = "/";
+    private static final String DEFAULT_FAILURE_URL = "/loginFailed";
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override
