@@ -3,7 +3,7 @@ package org.cognitor.server.openid.web.security;
 import org.cognitor.server.openid.web.OpenIdManager;
 import org.cognitor.server.platform.security.UniqueKeyUserDetails;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
  * @author Patrick Kranz
  */
-public class OpenIdAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class OpenIdAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private OpenIdManager openIdManager;
 
     public OpenIdAuthenticationSuccessHandler(OpenIdManager manager) {
@@ -31,6 +31,8 @@ public class OpenIdAuthenticationSuccessHandler implements AuthenticationSuccess
                     userDetails.getUniqueKey(),
                     authentication.isAuthenticated());
             response.sendRedirect(returnUrl);
+        } else {
+            super.onAuthenticationSuccess(request, response, authentication);
         }
     }
 

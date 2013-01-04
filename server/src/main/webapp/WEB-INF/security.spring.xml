@@ -28,6 +28,7 @@
         <property name="authenticationSuccessHandler">
             <bean class="org.cognitor.server.openid.web.security.OpenIdAuthenticationSuccessHandler">
                 <constructor-arg ref="openIdManager" />
+                <property name="defaultTargetUrl" value="/loginSuccess.html" />
             </bean>
         </property>
         <property name="allowSessionCreation" value="true" />

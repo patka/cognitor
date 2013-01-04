@@ -5,8 +5,10 @@ import org.cognitor.server.platform.security.UniqueKeyUserDetails;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.RedirectStrategy;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -49,5 +51,18 @@ public class OpenIdAuthenticationSuccessHandlerTest {
         handler.onAuthenticationSuccess(requestMock, responseMock, authenticationMock);
 
         verify(responseMock, times(1)).sendRedirect("http://return.url");
+    }
+
+    @Test
+    public void shouldRedirectToDefaultTargetUrlWhenNoOpenIdRequestGiven() throws Exception {
+        OpenIdAuthenticationSuccessHandler handler = new OpenIdAuthenticationSuccessHandler(openIdManagerMock);
+        RedirectStrategy strategyMock = Mockito.mock(RedirectStrategy.class);
+        handler.setDefaultTargetUrl("/loginFailed.html");
+        handler.setRedirectStrategy(strategyMock);
+        when(openIdManagerMock.isOpenIdRequest(requestMock)).thenReturn(false);
+
+        handler.onAuthenticationSuccess(requestMock, responseMock, authenticationMock);
+
+        verify(strategyMock, times(1)).sendRedirect(requestMock, responseMock, "/loginFailed.html");
     }
 }
