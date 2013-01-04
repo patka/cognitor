@@ -17,16 +17,16 @@ import static org.mockito.Mockito.when;
  * @author Patrick Kranz
  */
 @RunWith(MockitoJUnitRunner.class)
-public class RegistrationControllerTest {
+public class LoginControllerTest {
 
     @Mock
     HttpServletRequest requestMock;
 
-    private RegistrationController controller;
+    private LoginController controller;
 
     @Before
     public void setUp() {
-        controller = new RegistrationController();
+        controller = new LoginController();
     }
 
     @Test

@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.cognitor.server.platform.web.util.UrlUtil.appendQueryToUrl;
+import static org.cognitor.server.registration.web.controller.LoginController.LOGIN_URL;
 
 /**
  * @author patrick
@@ -31,20 +32,25 @@ import static org.cognitor.server.platform.web.util.UrlUtil.appendQueryToUrl;
 @Controller
 public class RegistrationController {
 
+    public static final String REGISTRATION_URL = "/registration.html";
+
     private static final String REGISTRATION_PAGE = "registration";
-    private static final String SECURITY_CHAIN_URL = "/login";
+
+    private UserService userService;
     
     @Autowired
-    private UserService userService;
+    public RegistrationController(UserService userService) {
+        this.userService = userService;
+    }
 
-    @RequestMapping(value = "/registration")
+    @RequestMapping(value = REGISTRATION_URL)
     public ModelAndView enterPage(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView(REGISTRATION_PAGE);
         modelAndView.addObject("registrationPageUrl", getRegistrationPageUrl(request));
         return modelAndView;
     }
 
-    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    @RequestMapping(value = REGISTRATION_URL, method = RequestMethod.POST)
     public ModelAndView registerUser(@Valid @ModelAttribute RegistrationFormBean formBean,
                                      BindingResult bindingResult,
                                      HttpServletRequest request) {
@@ -64,52 +70,27 @@ public class RegistrationController {
         return modelAndView;
     }
 
-    private User getUserFromBean(RegistrationFormBean formBean) {
+    private static User getUserFromBean(RegistrationFormBean formBean) {
         return new User(formBean.getEmail(), formBean.getPassword());
     }
 
     @ModelAttribute
-    private RegistrationFormBean createNewUser() {
+    private static RegistrationFormBean createNewUser() {
         return new RegistrationFormBean();
     }
     
-    private ModelAndView createErrorView(List<FieldError> errors, HttpServletRequest request) {
+    private static ModelAndView createErrorView(List<FieldError> errors, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView(REGISTRATION_PAGE);
         modelAndView.addObject("registrationPageUrl", getRegistrationPageUrl(request));
         modelAndView.addObject("errors", errors);
         return modelAndView;
     }
 
-    @RequestMapping(value="/", method = RequestMethod.GET)
-    public ModelAndView showLogin(HttpServletRequest request) {
-        Map<String, String> model = new HashMap<String, String>();
-        model.put("actionUrl", getLoginActionUrl(request));
-        model.put("registrationPageUrl", getRegistrationPageUrl(request));
-        return new ModelAndView("login", model);
+    private static String getLoginUrl(HttpServletRequest request) {
+        return appendQueryToUrl(LOGIN_URL, request.getQueryString());
     }
 
-    @RequestMapping(value = "/loginFailed", method = RequestMethod.GET)
-    public ModelAndView loginFailed(HttpServletRequest request) {
-        ModelAndView model = showLogin(request);
-        model.addObject("error", "login.badCredentials");
-        return model;
-    }
-
-    @RequestMapping(value = "loginSuccess")
-    @ResponseBody
-    public String showLoginSuccessPage() {
-        return "Success";
-    }
-
-    private String getLoginUrl(HttpServletRequest request) {
-        return appendQueryToUrl("/", request.getQueryString());
-    }
-
-    private String getLoginActionUrl(HttpServletRequest request) {
-        return appendQueryToUrl(SECURITY_CHAIN_URL, request.getQueryString());
-    }
-
-    private String getRegistrationPageUrl(HttpServletRequest request) {
-        return appendQueryToUrl("/" + REGISTRATION_PAGE + ".html", request.getQueryString());
+    private static String getRegistrationPageUrl(HttpServletRequest request) {
+        return appendQueryToUrl(REGISTRATION_URL, request.getQueryString());
     }
 }

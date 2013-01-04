@@ -27,7 +27,7 @@
         <property name="authenticationManager" ref="authenticationManager" />
         <property name="authenticationSuccessHandler">
             <bean class="org.cognitor.server.openid.web.security.OpenIdAuthenticationSuccessHandler">
-                    <constructor-arg ref="openIdManager" />
+                <constructor-arg ref="openIdManager" />
             </bean>
         </property>
         <property name="allowSessionCreation" value="true" />

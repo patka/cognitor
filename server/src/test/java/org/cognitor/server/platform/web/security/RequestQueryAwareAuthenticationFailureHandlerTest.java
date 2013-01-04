@@ -32,6 +32,7 @@ public class RequestQueryAwareAuthenticationFailureHandlerTest {
     public void setUp() {
         handler = new RequestQueryAwareAuthenticationFailureHandler();
         handler.setRedirectStrategy(strategyMock);
+        handler.setDefaultFailureUrl("/loginFailed");
     }
 
     @Test
