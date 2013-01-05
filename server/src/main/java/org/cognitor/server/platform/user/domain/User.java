@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
- * @author patrick
+ * @author Patrick Kranz
  */
 @Entity
 public class User implements Serializable {

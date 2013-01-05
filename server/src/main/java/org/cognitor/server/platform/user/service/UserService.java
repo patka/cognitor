@@ -8,7 +8,7 @@ package org.cognitor.server.platform.user.service;
 import org.cognitor.server.platform.user.domain.User;
 
 /**
- * @author patrick
+ * @author Patrick Kranz
  */
 public interface UserService {
 

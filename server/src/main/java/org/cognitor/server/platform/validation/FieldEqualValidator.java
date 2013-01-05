@@ -7,8 +7,7 @@ import javax.validation.ConstraintValidatorContext;
 import javax.validation.ValidationException;
 
 /**
- * User: patrick
- * Date: 12.12.12
+ * @author Patrick Kranz
  */
 public class FieldEqualValidator implements ConstraintValidator<FieldEqual, Object> {
     private String fieldName;

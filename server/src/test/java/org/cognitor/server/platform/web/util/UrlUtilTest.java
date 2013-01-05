@@ -8,8 +8,7 @@ import static junit.framework.Assert.assertEquals;
 import static org.cognitor.server.platform.web.util.UrlUtil.appendQueryToUrl;
 
 /**
- * User: patrick
- * Date: 10.12.12
+ * @author Patrick Kranz
  */
 @RunWith(MockitoJUnitRunner.class)
 public class UrlUtilTest {

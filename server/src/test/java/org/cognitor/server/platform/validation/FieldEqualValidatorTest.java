@@ -13,8 +13,7 @@ import javax.validation.ValidationException;
 import static org.mockito.Mockito.*;
 
 /**
- * User: patrick
- * Date: 12.12.12
+ * @author Patrick Kranz
  */
 @RunWith(MockitoJUnitRunner.class)
 public class FieldEqualValidatorTest {

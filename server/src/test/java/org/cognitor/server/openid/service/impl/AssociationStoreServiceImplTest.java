@@ -17,8 +17,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 /**
- * User: patrick
- * Date: 21.11.12
+ * @author Patrick Kranz
  */
 @RunWith(MockitoJUnitRunner.class)
 public class AssociationStoreServiceImplTest {

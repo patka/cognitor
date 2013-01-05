@@ -3,8 +3,7 @@ package org.cognitor.server.platform.web.util;
 import org.springframework.util.StringUtils;
 
 /**
- * User: patrick
- * Date: 10.12.12
+ * @author Patrick Kranz
  */
 public final class UrlUtil {
     private UrlUtil() {

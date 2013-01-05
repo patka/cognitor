@@ -11,8 +11,7 @@ import java.lang.annotation.*;
  * If both fields are null the fields are considered equal to not
  * fail on a nullable field.
  *
- * User: patrick
- * Date: 12.12.12
+ * @author Patrick Kranz
  */
 @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)

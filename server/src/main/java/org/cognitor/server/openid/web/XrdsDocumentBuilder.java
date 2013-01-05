@@ -18,8 +18,7 @@ import java.io.ByteArrayInputStream;
 import java.io.StringWriter;
 
 /**
- * User: patrick
- * Date: 27.11.12
+ * @author Patrick Kranz
  */
 public class XrdsDocumentBuilder {
     private static final Logger LOGGER = LoggerFactory.getLogger(XrdsDocumentBuilder.class);

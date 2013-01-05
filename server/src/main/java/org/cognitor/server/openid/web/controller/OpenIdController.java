@@ -21,8 +21,7 @@ import static org.cognitor.server.openid.web.OpenIdManager.XRDS_HEADER;
 import static org.cognitor.server.platform.web.util.UrlUtil.createQueryString;
 
 /**
- * User: patrick
- * Date: 13.11.12
+ * @author Patrick Kranz
  */
 @Controller
 public class OpenIdController {

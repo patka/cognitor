@@ -1,6 +1,5 @@
 package org.cognitor.server.platform.web.security;
 
-import org.cognitor.server.platform.web.util.UrlUtil;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;

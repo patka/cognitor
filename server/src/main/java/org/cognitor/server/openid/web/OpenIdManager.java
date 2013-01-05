@@ -11,8 +11,7 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * User: patrick
- * Date: 06.12.12
+ * @author Patrick Kranz
  */
 @Component
 public class OpenIdManager {

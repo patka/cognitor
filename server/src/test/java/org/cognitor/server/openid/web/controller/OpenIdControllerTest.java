@@ -27,8 +27,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 /**
- * User: patrick
- * Date: 14.11.12
+ * @author Patrick Kranz
  */
 @RunWith(MockitoJUnitRunner.class)
 public class OpenIdControllerTest {

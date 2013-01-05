@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.cognitor.server.registration.web.controller;
 
 import org.cognitor.server.platform.user.domain.User;
@@ -24,7 +19,7 @@ import static org.cognitor.server.platform.web.util.UrlUtil.appendQueryToUrl;
 import static org.cognitor.server.registration.web.controller.LoginController.LOGIN_URL;
 
 /**
- * @author patrick
+ * @author Patrick Kranz
  */
 @Controller
 public class RegistrationController {

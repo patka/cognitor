@@ -6,8 +6,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
- * User: patrick
- * Date: 12.12.12
+ * @author Patrick Kranz
  */
 @FieldEqual(field = "password", verificationField = "passwordVerification")
 public class RegistrationFormBean {

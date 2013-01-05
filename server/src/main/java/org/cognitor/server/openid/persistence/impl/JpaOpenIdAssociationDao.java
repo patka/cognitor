@@ -10,8 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * User: patrick
- * Date: 20.11.12
+ * @author Patrick Kranz
  */
 @Component
 public class JpaOpenIdAssociationDao implements OpenIdAssociationDao {

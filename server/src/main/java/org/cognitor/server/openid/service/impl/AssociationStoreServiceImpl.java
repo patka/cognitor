@@ -14,8 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 /**
- * User: patrick
- * Date: 16.11.12
+ * @author Patrick Kranz
  */
 @Service(value = "serverAssociationStore")
 public class AssociationStoreServiceImpl implements ServerAssociationStore {

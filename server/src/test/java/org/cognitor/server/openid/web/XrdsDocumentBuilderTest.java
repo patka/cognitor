@@ -5,8 +5,7 @@ import org.junit.Test;
 import static junit.framework.Assert.*;
 
 /**
- * User: patrick
- * Date: 30.11.12
+ * @author Patrick Kranz
  */
 public class XrdsDocumentBuilderTest {
 

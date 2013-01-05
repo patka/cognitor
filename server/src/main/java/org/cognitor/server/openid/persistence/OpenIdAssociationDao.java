@@ -3,8 +3,7 @@ package org.cognitor.server.openid.persistence;
 import org.cognitor.server.openid.domain.OpenIdAssociation;
 
 /**
- * User: patrick
- * Date: 19.11.12
+ * @author Patrick Kranz
  */
 public interface OpenIdAssociationDao {
     void delete(String handle);

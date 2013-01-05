@@ -9,8 +9,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 /**
- * User: patrick
- * Date: 19.11.12
+ * @author Patrick Kranz
  */
 @Entity
 public class OpenIdAssociation {

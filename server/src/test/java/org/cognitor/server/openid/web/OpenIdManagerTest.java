@@ -14,8 +14,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 /**
- * User: patrick
- * Date: 06.12.12
+ * @author Patrick Kranz
  */
 @RunWith(MockitoJUnitRunner.class)
 public class OpenIdManagerTest {

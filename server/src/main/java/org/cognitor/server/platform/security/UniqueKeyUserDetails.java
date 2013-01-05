@@ -3,8 +3,7 @@ package org.cognitor.server.platform.security;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
- * User: patrick
- * Date: 20.12.12
+ * @author Patrick Kranz
  */
 public interface UniqueKeyUserDetails extends UserDetails {
     /**

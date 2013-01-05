@@ -1,8 +1,7 @@
 package org.cognitor.server.openid.web;
 
 /**
- * User: patrick
- * Date: 07.12.12
+ * @author Patrick Kranz
  */
 public enum OpenIdMode {
     ASSOCIATE,

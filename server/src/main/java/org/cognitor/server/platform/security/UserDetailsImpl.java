@@ -9,8 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * User: patrick
- * Date: 26.11.12
+ * @author Patrick Kranz
  */
 public class UserDetailsImpl implements UniqueKeyUserDetails {
     public static final String ROLE_USER = "ROLE_USER";

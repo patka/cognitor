@@ -1,8 +1,7 @@
 package org.cognitor.server.platform.validation;
 
 /**
- * User: patrick
- * Date: 12.12.12
+ * @author Patrick Kranz
  */
 public class TestObject {
     private String field;
