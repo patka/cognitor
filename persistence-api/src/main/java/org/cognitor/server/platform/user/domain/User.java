@@ -22,6 +22,7 @@ public class User implements Serializable {
     @NotNull
     private String password;
 
+    @SuppressWarnings("unused")
     public User() {
     }
     
@@ -42,6 +43,7 @@ public class User implements Serializable {
         return email;
     }
 
+    @SuppressWarnings("unused")
     public void setEmail(String email) {
         this.email = email;
     }
@@ -50,6 +52,7 @@ public class User implements Serializable {
         return password;
     }
 
+    @SuppressWarnings("unused")
     public void setPassword(String password) {
         this.password = password;
     }

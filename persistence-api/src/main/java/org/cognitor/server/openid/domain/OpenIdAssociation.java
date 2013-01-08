@@ -19,6 +19,7 @@ public class OpenIdAssociation {
     @NotNull
     private byte[] key;
 
+    @SuppressWarnings("unused")
     public OpenIdAssociation() {
     }
 
@@ -33,6 +34,7 @@ public class OpenIdAssociation {
         return handle;
     }
 
+    @SuppressWarnings("unused")
     public void setHandle(String handle) {
         this.handle = handle;
     }
@@ -41,6 +43,7 @@ public class OpenIdAssociation {
         return type;
     }
 
+    @SuppressWarnings("unused")
     public void setType(String type) {
         this.type = type;
     }
@@ -49,6 +52,7 @@ public class OpenIdAssociation {
         return expiry;
     }
 
+    @SuppressWarnings("unused")
     public void setExpiry(DateTime expiry) {
         this.expiry = expiry;
     }
@@ -57,6 +61,7 @@ public class OpenIdAssociation {
         return key;
     }
 
+    @SuppressWarnings("unused")
     public void setKey(byte[] key) {
         this.key = key;
     }
