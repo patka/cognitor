@@ -3,23 +3,18 @@ package org.cognitor.server.platform.user.domain;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
  * @author Patrick Kranz
  */
-@Entity
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Email
-    @Column(unique = true)
     @NotNull
     private String email;
 

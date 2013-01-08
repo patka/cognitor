@@ -1,29 +1,19 @@
 package org.cognitor.server.openid.domain;
 
-import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 /**
  * @author Patrick Kranz
  */
-@Entity
 public class OpenIdAssociation {
-
-    @Id
     @NotNull
-    @Column(unique = true)
     private String handle;
 
     @NotNull
     private String type;
 
     @NotNull
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime expiry;
 
     @NotNull
