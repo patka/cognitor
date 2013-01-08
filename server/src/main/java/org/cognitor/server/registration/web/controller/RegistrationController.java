@@ -1,6 +1,7 @@
 package org.cognitor.server.registration.web.controller;
 
 import org.cognitor.server.platform.user.domain.User;
+import org.cognitor.server.platform.user.domain.UserAlreadyExistsException;
 import org.cognitor.server.platform.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -53,7 +54,7 @@ public class RegistrationController {
         }
         try {
             userService.registerUser(getUserFromBean(formBean));
-        } catch (IllegalStateException ise) {
+        } catch (UserAlreadyExistsException exception) {
             bindingResult.addError(createEmailExistsError(formBean.getEmail()));
             return createErrorView(bindingResult.getFieldErrors(), request);
         }

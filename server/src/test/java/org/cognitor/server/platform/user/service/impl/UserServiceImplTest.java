@@ -1,6 +1,7 @@
 package org.cognitor.server.platform.user.service.impl;
 
 import org.cognitor.server.platform.user.domain.User;
+import org.cognitor.server.platform.user.domain.UserAlreadyExistsException;
 import org.cognitor.server.platform.user.persistence.UserDao;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,10 +52,10 @@ public class UserServiceImplTest {
         assertTrue(details.isEnabled());
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = UserAlreadyExistsException.class)
     public void shouldThrowExceptionWhenAlreadyExistingUserForRegistrationGiven() {
-        User testUser = new User("testUser", "somePass");
-        when(userDaoMock.exists(testUser)).thenReturn(true);
+        User testUser = new User("testUser@test.de", "somePass");
+        doThrow(new UserAlreadyExistsException(testUser.getEmail())).when(userDaoMock).save(testUser);
 
         service.registerUser(testUser);
     }
@@ -62,7 +63,6 @@ public class UserServiceImplTest {
     @Test
     public void shouldCreateNewUserWhenNewUserForRegistrationGiven() {
         User testUser = new User("testUser", "somePass");
-        when(userDaoMock.exists(testUser)).thenReturn(false);
 
         service.registerUser(testUser);
 

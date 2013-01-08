@@ -1,13 +1,11 @@
 package org.cognitor.server.platform.user.persistence.impl;
 
 import org.cognitor.server.platform.user.domain.User;
+import org.cognitor.server.platform.user.domain.UserAlreadyExistsException;
 import org.cognitor.server.platform.user.persistence.UserDao;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.*;
 
 @Component
 public class JpaUserDao implements UserDao {
@@ -15,14 +13,17 @@ public class JpaUserDao implements UserDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-
     @Override
-    public void save(User user) {
+    public User save(User user) {
+        if (exists(user)) {
+            throw new UserAlreadyExistsException(user.getEmail());
+        }
+
         entityManager.persist(user);
+        return user;
     }
 
-    @Override
-    public boolean exists(User user) {
+    private boolean exists(User user) {
         Query query = entityManager.createQuery(
                 "select count(u.email) from User u where u.email = :email");
         query.setParameter("email", user.getEmail());

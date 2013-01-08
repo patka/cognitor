@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author Patrick Kranz
  */
-@Service(value = "UserServiceImpl")
+@Service("UserServiceImpl")
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private UserDao userDao;
@@ -28,10 +28,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional
     public void registerUser(User user) {
-        if (userDao.exists(user)) {
-            throw new IllegalStateException("User already existing");
-        }
-
         userDao.save(user);
     }
 
