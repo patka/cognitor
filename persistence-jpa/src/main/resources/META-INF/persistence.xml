@@ -6,6 +6,7 @@
 
     <persistence-unit name="Database" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <mapping-file>domain.hbm.xml</mapping-file>
+        <mapping-file>META-INF/domain.hbm.xml</mapping-file>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
     </persistence-unit>
 </persistence>
