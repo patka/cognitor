@@ -26,13 +26,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Transactional
     public void registerUser(User user) {
         userDao.save(user);
     }
 
     @Override
-    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
         final User user = userDao.load(username);
         if (user == null) {

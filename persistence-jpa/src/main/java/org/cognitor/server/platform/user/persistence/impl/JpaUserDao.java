@@ -4,6 +4,7 @@ import org.cognitor.server.platform.user.domain.User;
 import org.cognitor.server.platform.user.domain.UserAlreadyExistsException;
 import org.cognitor.server.platform.user.persistence.UserDao;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 
@@ -14,6 +15,7 @@ public class JpaUserDao implements UserDao {
     private EntityManager entityManager;
 
     @Override
+    @Transactional
     public User save(User user) {
         if (exists(user)) {
             throw new UserAlreadyExistsException(user.getEmail());
@@ -31,6 +33,7 @@ public class JpaUserDao implements UserDao {
     }
 
     @Override
+    @Transactional
     public User load(String email) {
         Query query = entityManager.createQuery("from User u where u.email = :email");
         query.setParameter("email", email);

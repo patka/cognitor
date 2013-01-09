@@ -2,22 +2,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>cognitor</artifactId>
-        <groupId>org.cognitor</groupId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cognitor-persistence-api</artifactId>
+    <modelVersion>4.0.0</modelVersion>
+    <name>Cognitor Persistence API</name>
     <description>
         API package with DAO interfaces and domain objects. This module
         can be used to implement a custom persistence module in order
         to integrate the service with a given data store
     </description>
-    <name>Cognitor Persistence API</name>
+    <artifactId>cognitor-persistence-api</artifactId>
     <packaging>jar</packaging>
-    <version>${parent.version}</version>
+    <version>1.0-SNAPSHOT</version>
+
+    <parent>
+        <artifactId>cognitor</artifactId>
+        <groupId>org.cognitor</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
 
     <dependencies>
         <dependency>
