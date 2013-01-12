@@ -28,8 +28,9 @@ public class JpaOpenIdAssociationDao implements OpenIdAssociationDao {
 
     @Override
     @Transactional
-    public void save(OpenIdAssociation openIdAssociation) {
+    public OpenIdAssociation save(OpenIdAssociation openIdAssociation) {
         entityManager.persist(openIdAssociation);
+        return openIdAssociation;
     }
 
     @Override
