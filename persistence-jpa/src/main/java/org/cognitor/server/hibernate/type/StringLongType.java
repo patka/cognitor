@@ -15,7 +15,7 @@ import java.sql.Types;
  * in the database but the value is stored in a String.
  *
  * This is required for Id values that are Strings because they might be used
- * with other peristence solutions which do not require an id to be numerical.
+ * with other persistence solutions which do not require an id to be numerical.
  *
  * @author Patrick Kranz
  */
