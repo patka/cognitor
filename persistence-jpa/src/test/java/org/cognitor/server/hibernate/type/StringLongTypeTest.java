@@ -115,13 +115,13 @@ public class StringLongTypeTest {
     }
 
     @Test
-    public void shouldReturnValueWhenDisassambleCalled() {
+    public void shouldReturnValueWhenDisassembleCalled() {
         String value = "3";
         assertEquals(value, stringLongType.disassemble(value));
     }
 
     @Test
-    public void shouldReturnValueWhenAssambleCalled() {
+    public void shouldReturnValueWhenAssembleCalled() {
         String value = "3";
         assertEquals(value, stringLongType.assemble(value, null));
     }
