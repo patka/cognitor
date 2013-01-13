@@ -4,6 +4,10 @@ import org.joda.time.DateTime;
 import javax.validation.constraints.NotNull;
 
 /**
+ * This is the persistent entity for an Open ID association.
+ * In the server this entity is mapped to an Association object that
+ * is used by the OpenID4Java framework.
+ *
  * @author Patrick Kranz
  */
 public class OpenIdAssociation {
@@ -23,6 +27,15 @@ public class OpenIdAssociation {
     public OpenIdAssociation() {
     }
 
+    /**
+     * Constructor to create an association. All values must be provided.
+     *
+     * @param handle The handle is used to identify an association. It must be
+     *               unique and must not be null.
+     * @param type The type of the association, e.g. HMAC-SHA256.
+     * @param expiry The expiry date. This indicates how long an association is valid.
+     * @param key The key that is used to sign open id messages.
+     */
     public OpenIdAssociation(String handle, String type, DateTime expiry, byte[] key) {
         this.handle = handle;
         this.type = type;
