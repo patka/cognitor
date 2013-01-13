@@ -31,7 +31,7 @@ public class OpenIdAssociation {
      * Constructor to create an association. All values must be provided.
      *
      * @param handle The handle is used to identify an association. It must be
-     *               unique and must not be null.
+     *               unique.
      * @param type The type of the association, e.g. HMAC-SHA256.
      * @param expiry The expiry date. This indicates how long an association is valid.
      * @param key The key that is used to sign open id messages.
