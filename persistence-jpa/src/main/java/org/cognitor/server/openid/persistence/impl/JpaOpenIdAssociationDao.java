@@ -10,6 +10,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
+ * {@inheritDoc}
+ *
  * @author Patrick Kranz
  */
 @Component
@@ -18,6 +20,9 @@ public class JpaOpenIdAssociationDao implements OpenIdAssociationDao {
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void delete(String handle) {
         Query query = entityManager.createQuery(
@@ -26,6 +31,9 @@ public class JpaOpenIdAssociationDao implements OpenIdAssociationDao {
         query.executeUpdate();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public OpenIdAssociation save(OpenIdAssociation openIdAssociation) {
@@ -33,6 +41,9 @@ public class JpaOpenIdAssociationDao implements OpenIdAssociationDao {
         return openIdAssociation;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public OpenIdAssociation load(String handle) {

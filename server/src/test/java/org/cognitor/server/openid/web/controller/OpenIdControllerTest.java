@@ -54,7 +54,7 @@ public class OpenIdControllerTest {
     public void setUp() {
         controller = new OpenIdController(openIdManagerMock);
         User user = new User("testUser", "testPassword");
-        user.setId(1L);
+        user.setId("1");
         userDetails = new UserDetailsImpl(user);
     }
 

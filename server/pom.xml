@@ -19,13 +19,13 @@
         <dependency>
             <groupId>org.cognitor</groupId>
             <artifactId>cognitor-persistence-api</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.cognitor</groupId>
             <artifactId>cognitor-persistence-jpa</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
