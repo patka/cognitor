@@ -28,22 +28,22 @@ public class SecurityContextRepositoryResponseWrapperTest {
     private SecurityContextRepository repositoryMock;
 
     @Test(expected = IllegalArgumentException.class)
-    public void ShouldThrowExceptionWhenNoRequestForConstructorGiven() {
+    public void shouldThrowExceptionWhenNoRequestForConstructorGiven() {
         new SecurityContextRepositoryResponseWrapper(null, responseMock, repositoryMock);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void ShouldThrowExceptionWhenNoResponseForConstructorGiven() {
+    public void shouldThrowExceptionWhenNoResponseForConstructorGiven() {
         new SecurityContextRepositoryResponseWrapper(requestMock, null, repositoryMock);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void ShouldThrowExceptionWhenNoRepositoryForConstructorGiven() {
+    public void shouldThrowExceptionWhenNoRepositoryForConstructorGiven() {
         new SecurityContextRepositoryResponseWrapper(requestMock, responseMock, null);
     }
 
     @Test
-    public void ShouldSaveSecurityContextWhenUncommittedResponseGiven() {
+    public void shouldSaveSecurityContextWhenUncommittedResponseGiven() {
         // GIVEN
         SecurityContextRepositoryResponseWrapper wrapper =
                 new SecurityContextRepositoryResponseWrapper(requestMock, responseMock, repositoryMock);
@@ -56,7 +56,7 @@ public class SecurityContextRepositoryResponseWrapperTest {
     }
 
     @Test
-    public void ShouldNotSaveSecurityContextWhenCommittedResponseGiven() {
+    public void shouldNotSaveSecurityContextWhenCommittedResponseGiven() {
         // GIVEN
         SecurityContextRepositoryResponseWrapper wrapper =
                 new SecurityContextRepositoryResponseWrapper(requestMock, responseMock, repositoryMock);
