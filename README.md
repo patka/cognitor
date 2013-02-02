@@ -9,8 +9,6 @@ manage those users and allows the user to login once for all applications.
 Because Cognitor uses OpenID it is not limited to the domain boundaries
 like cookies would be.
 
-Currently, this project is at a very early development stage, so there is
-not very much except the openid request handling and a very basic user
-registration. The goal however, is to have a small, stateless, extensible and
+The goal is to have a small, stateless, extensible and
 configurable application that can be integrated into an existing environment
 by customizing the persistence.
