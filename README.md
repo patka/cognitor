@@ -12,3 +12,5 @@ like cookies would be.
 The goal is to have a small, stateless, extensible and
 configurable application that can be integrated into an existing environment
 by customizing the persistence.
+
+For more information go to the wiki: http://github.com/patka/cognitor/wiki
