@@ -44,7 +44,7 @@ public class CookieSecurityContextRepositoryTest {
     @Before
     public void setUp() {
         holder = new HttpRequestResponseHolder(requestMock, responseMock);
-        this.repository = new CookieSecurityContextRepository(cookieSerializerMock, "localhost");
+        this.repository = new CookieSecurityContextRepository(cookieSerializerMock);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -86,12 +86,7 @@ public class CookieSecurityContextRepositoryTest {
     // Constructor
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionWhenNullValueForSerializerGiven() {
-        new CookieSecurityContextRepository(null, "localhost");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowExceptionWhenNullValueForDomainGiven() {
-        new CookieSecurityContextRepository(cookieSerializerMock, null);
+        new CookieSecurityContextRepository(null);
     }
 
     // load context
@@ -170,8 +165,6 @@ public class CookieSecurityContextRepositoryTest {
         verify(responseMock, atLeastOnce()).addCookie(cookieArgumentCaptor.capture());
         Cookie securityCookie = cookieArgumentCaptor.getValue();
         assertEquals(DEFAULT_COOKIE_NAME, securityCookie.getName());
-        assertTrue(securityCookie.getSecure());
-        assertEquals("localhost", securityCookie.getDomain());
         assertNotNull(securityCookie.getValue());
     }
 

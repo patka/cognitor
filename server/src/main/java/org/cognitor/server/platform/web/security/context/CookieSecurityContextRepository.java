@@ -48,16 +48,12 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
     private static final String COOKIE_DATA_ENCODING = "UTF-8";
 
     private final SecurityContextSerializer cookieSerializer;
-    private final String domainName;
 
     private String cookieName = DEFAULT_COOKIE_NAME;
 
-    public CookieSecurityContextRepository(SecurityContextSerializer serializer,
-                                           String domainName) {
+    public CookieSecurityContextRepository(SecurityContextSerializer serializer) {
         notNull(serializer);
-        notNull(domainName);
         this.cookieSerializer = serializer;
-        this.domainName = domainName;
     }
 
     @Override
@@ -124,8 +120,7 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
 
     private void addCookieToResponse(HttpServletResponse response, String encodedData) {
         Cookie securityCookie = new Cookie(cookieName, encodedData);
-        securityCookie.setDomain(domainName);
-        securityCookie.setSecure(true);
+        securityCookie.setPath("/");
         response.addCookie(securityCookie);
     }
 
