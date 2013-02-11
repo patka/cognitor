@@ -10,7 +10,7 @@
     </appender>
 
     <logger name="org.cognitor">
-        <level value="debug" />
+        <level value="info" />
     </logger>
     
     <logger name="org.springframework.security">
