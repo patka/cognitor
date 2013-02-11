@@ -1,4 +1,6 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
 <head>
     <title>OpenID Answer</title>
@@ -11,9 +13,9 @@ Identification: ${identifier}
 <p>
 The answer had the following parameters:
 <ul>
-    <% for (String key : request.getParameterMap().keySet())  {%>
-    <li><%= key %>: <%= request.getParameter(key) %></li>
-    <%} %>
+    <c:forEach items="${param}" var="parameter">
+        <li><c:out value="${parameter.key}"/>: <c:out value="${parameter.value}"/>
+    </c:forEach>
 </ul>
 </p>
 </body>
