@@ -4,10 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.codec.Base64;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
 import org.springframework.security.web.context.SaveContextOnUpdateOrErrorResponseWrapper;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.apache.commons.codec.binary.Base64;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -95,7 +95,7 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
 
     private static byte[] decodeBase64(String base64encodedData) {
         try {
-            return Base64.decode(base64encodedData.getBytes(COOKIE_DATA_ENCODING));
+            return Base64.decodeBase64(base64encodedData.getBytes(COOKIE_DATA_ENCODING));
         } catch (UnsupportedEncodingException exception) {
             LOGGER.error("No " + COOKIE_DATA_ENCODING + " support found on this system! Login will not work.", exception);
             throw new SerializeException("Cookie data cannot be decoded", exception);
@@ -126,7 +126,7 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
 
     private String encodeBase64(byte[] serializedData) {
         try {
-            byte[] base64encodedData = Base64.encode(serializedData);
+            byte[] base64encodedData = Base64.encodeBase64URLSafe(serializedData);
             return new String(base64encodedData, COOKIE_DATA_ENCODING);
         } catch (UnsupportedEncodingException exception) {
             LOGGER.error("No " + COOKIE_DATA_ENCODING + " support found on this system! Login will not work.", exception);

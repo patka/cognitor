@@ -5,15 +5,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.crypto.codec.Base64;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
 import org.springframework.security.web.context.SaveContextOnUpdateOrErrorResponseWrapper;
+
+import org.apache.commons.codec.binary.Base64;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -135,7 +135,7 @@ public class CookieSecurityContextRepositoryTest {
     @Test
     public void shouldReturnDeserializedContextWhenValidBase64EncodedDataGiven() {
         final SecurityContext validContext = new SecurityContextImpl();
-        byte[] validData = Base64.encode("hello".getBytes());
+        byte[] validData = Base64.encodeBase64URLSafe("hello".getBytes());
         when(cookieSerializerMock.deserialize(any(byte[].class))).thenAnswer(new Answer<Object>() {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
@@ -176,7 +176,7 @@ public class CookieSecurityContextRepositoryTest {
         repository.saveContext(new SecurityContextImpl(), requestMock, responseMock);
         verify(responseMock, atLeastOnce()).addCookie(cookieArgumentCaptor.capture());
         String cookieContent = cookieArgumentCaptor.getValue().getValue();
-        byte[] cookieDecoded = Base64.decode(cookieContent.getBytes());
+        byte[] cookieDecoded = Base64.decodeBase64(cookieContent.getBytes());
         assertArrayEquals(serializedContext, cookieDecoded);
     }
 
