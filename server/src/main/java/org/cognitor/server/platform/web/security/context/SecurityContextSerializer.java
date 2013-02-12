@@ -42,8 +42,6 @@ public class SecurityContextSerializer {
             closeQuietly(memoryStream);
             closeQuietly(inputStream);
         }
-
-
     }
 
     public byte[] serialize(SecurityContext securityContext) throws SerializeException {
