@@ -7,7 +7,7 @@
 </head>
 <body>
 <p>
-Received the following answer from the OpenID system: <br />>
+Received the following answer from the OpenID system: <br />
 Identification: <c:out value="${identifier}" />
 </p>
 <p>

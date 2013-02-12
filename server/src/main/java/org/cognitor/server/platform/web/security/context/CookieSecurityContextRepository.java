@@ -82,7 +82,7 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
             return createNewContext();
         }
 
-        SecurityContext context = getSecurityContext(securityCookie);
+        SecurityContext context = getSecurityContext(cookieValues[0]);
         renewContext(context, requestResponseHolder);
         return context;
     }
@@ -115,10 +115,10 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
         return securityCookie == null;
     }
 
-    private SecurityContext getSecurityContext(Cookie securityCookie) {
+    private SecurityContext getSecurityContext(String serializedContext) {
         try {
             SecurityContext context =
-                    cookieSerializer.deserialize(decodeBase64(securityCookie.getValue()));
+                    cookieSerializer.deserialize(decodeBase64(serializedContext));
             LOGGER.debug("Successfully loaded security context from cookie");
             return context;
         } catch (SerializeException exception) {
