@@ -1,5 +1,6 @@
 package org.cognitor.server.platform.web.security.context;
 
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -7,15 +8,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
 import org.springframework.security.web.context.SaveContextOnUpdateOrErrorResponseWrapper;
-
-import org.apache.commons.codec.binary.Base64;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +37,7 @@ public class CookieSecurityContextRepositoryTest {
     private HttpServletResponse responseMock;
 
     @Mock
-    private SecurityContextSerializer cookieSerializerMock;
+    private SecurityCookieMarshaller securityCookieMarshaller;
 
     private HttpRequestResponseHolder holder;
     private CookieSecurityContextRepository repository;
@@ -46,7 +45,7 @@ public class CookieSecurityContextRepositoryTest {
     @Before
     public void setUp() {
         holder = new HttpRequestResponseHolder(requestMock, responseMock);
-        this.repository = new CookieSecurityContextRepository(cookieSerializerMock);
+        this.repository = new CookieSecurityContextRepository(securityCookieMarshaller);
     }
 
     @After
@@ -111,87 +110,59 @@ public class CookieSecurityContextRepositoryTest {
     }
 
     @Test
-    public void shouldReturnEmptySecurityContextWhenDeserializingThrowsException() {
+    public void shouldReturnEmptySecurityContextWhenDeserializingReturnsNull() {
         when(requestMock.getCookies()).thenReturn(new Cookie[] { new Cookie("context", "") });
-        when(cookieSerializerMock.deserialize(any(byte[].class))).thenThrow(new SerializeException("test"));
+        when(securityCookieMarshaller.getSecurityCookie(anyString())).thenReturn(null);
         SecurityContext context = repository.loadContext(holder);
         assertNotNull(context);
         assertNull(context.getAuthentication());
     }
 
     @Test
-    public void shouldReturnEmptySecurityContextWhenNoBase64EncodedCookieContentGiven() {
+    public void shouldReturnEmptySecurityContextWhenSecurityCookieIsExpired() {
+        SecurityCookie expiredCookie = new SecurityCookie(new SecurityContextImpl(), DateTime.now().minusMinutes(1));
         when(requestMock.getCookies()).thenReturn(new Cookie[] { new Cookie("context", "") });
-        when(cookieSerializerMock.deserialize(any(byte[].class))).thenAnswer(new Answer<Object>() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                byte[] serializedContent = (byte[]) invocation.getArguments()[0];
-                if (serializedContent.length == 0) {
-                    throw new SerializeException("no input data");
-                } else {
-                    fail("expected empty byte[]");
-                    return null;
-                }
-            }
-        });
+        when(securityCookieMarshaller.getSecurityCookie(anyString())).thenReturn(expiredCookie);
         SecurityContext context = repository.loadContext(holder);
         assertNotNull(context);
         assertNull(context.getAuthentication());
     }
 
     @Test
-    public void shouldReturnDeserializedContextWhenValidBase64EncodedDataGiven() {
+    public void shouldReturnDeserializedContextWhenValidCookieGiven() {
         final SecurityContext validContext = new SecurityContextImpl();
-        byte[] validData = Base64.encodeBase64URLSafe("hello".getBytes());
-        when(cookieSerializerMock.deserialize(any(byte[].class))).thenAnswer(new Answer<Object>() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                byte[] serializedContent = (byte[]) invocation.getArguments()[0];
-                String value = new String(serializedContent);
-                if ("hello".equals(value)) {
-                    return validContext;
-                } else {
-                    fail("should have been a valid context");
-                    return null;
-                }
-            }
-        });
-        when(requestMock.getCookies()).thenReturn(new Cookie[]{
-                new Cookie("context", new String(validData))});
-
-        SecurityContext result = repository.loadContext(holder);
-        assertEquals(validContext, result);
+        final SecurityCookie validCookie = new SecurityCookie(validContext, DateTime.now().plusMinutes(1));
+        when(requestMock.getCookies()).thenReturn(new Cookie[] { new Cookie("context", "") });
+        when(securityCookieMarshaller.getSecurityCookie(anyString())).thenReturn(validCookie);
+        SecurityContext context = repository.loadContext(holder);
+        assertEquals(validContext, context);
     }
 
-    // save context
     @Test
     public void shouldAttachSecurityCookieToResponseWhenSecurityContextGiven() {
-        when(cookieSerializerMock.serialize(any(SecurityContext.class))).thenReturn(new byte[] { 1, 2, 3 });
+        when(securityCookieMarshaller.getBase64EncodedValue(any(SecurityCookie.class))).thenReturn("data");
         ArgumentCaptor<Cookie> cookieArgumentCaptor = ArgumentCaptor.forClass(Cookie.class);
-        repository.saveContext(new SecurityContextImpl(), requestMock, responseMock);
+        repository.saveContext(createNonAnonymousSecurityContext(), requestMock, responseMock);
         verify(responseMock, atLeastOnce()).addCookie(cookieArgumentCaptor.capture());
         Cookie securityCookie = cookieArgumentCaptor.getValue();
         assertEquals(DEFAULT_COOKIE_NAME, securityCookie.getName());
-        assertNotNull(securityCookie.getValue());
+        assertEquals("data", securityCookie.getValue());
+        assertEquals(1800, securityCookie.getMaxAge());
     }
 
     @Test
-    public void shouldEncodeDataBase64WhenSecurityContextGiven() {
-        final byte[] serializedContext = {1, 2, 3};
-        when(cookieSerializerMock.serialize(any(SecurityContext.class))).thenReturn(serializedContext);
-        ArgumentCaptor<Cookie> cookieArgumentCaptor = ArgumentCaptor.forClass(Cookie.class);
-        repository.saveContext(new SecurityContextImpl(), requestMock, responseMock);
-        verify(responseMock, atLeastOnce()).addCookie(cookieArgumentCaptor.capture());
-        String cookieContent = cookieArgumentCaptor.getValue().getValue();
-        byte[] cookieDecoded = Base64.decodeBase64(cookieContent.split("&")[0].getBytes());
-        assertArrayEquals(serializedContext, cookieDecoded);
-    }
-
-    @Test
-    public void shouldNotAttachCookieToResponseWhenSerializationExceptionGiven() {
+    public void shouldNotAttachCookieToResponseWhenEmptySerializedStringGiven() {
         SecurityContextImpl securityContext = new SecurityContextImpl();
-        when(cookieSerializerMock.serialize(securityContext))
-                .thenThrow(new SerializeException("test"));
+        when(securityCookieMarshaller.getBase64EncodedValue(any(SecurityCookie.class))).thenReturn("");
+        repository.saveContext(securityContext, requestMock, responseMock);
+
+        verify(responseMock, never()).addCookie(any(Cookie.class));
+    }
+
+    @Test
+    public void shouldNotAttachCookieToResponseWhenNullAsSerializedStringGiven() {
+        SecurityContextImpl securityContext = new SecurityContextImpl();
+        when(securityCookieMarshaller.getBase64EncodedValue(any(SecurityCookie.class))).thenReturn(null);
         repository.saveContext(securityContext, requestMock, responseMock);
 
         verify(responseMock, never()).addCookie(any(Cookie.class));
@@ -199,105 +170,76 @@ public class CookieSecurityContextRepositoryTest {
 
     @Test
     public void shouldNotAttachCookieToResponseWhenCommittedResponseGiven() {
-        SecurityContextImpl securityContext = new SecurityContextImpl();
+        SecurityContext securityContext = new SecurityContextImpl();
         when(responseMock.isCommitted()).thenReturn(true);
         repository.saveContext(securityContext, requestMock, responseMock);
-        verify(responseMock, never()).addCookie(any(Cookie.class));
-    }
-
-    // session date time
-    @Test
-    public void shouldReturnContextFromCookieWhenValidSessionDateGiven() {
-        DateTimeUtils.setCurrentMillisFixed(3000);
-        SecurityContext shouldBeReturned = new SecurityContextImpl();
-        when(cookieSerializerMock.deserialize(any(byte[].class))).thenReturn(shouldBeReturned);
-        when(requestMock.getCookies()).thenReturn(new Cookie[]{new Cookie("context", "123&4000")});
-        when(cookieSerializerMock.serialize(shouldBeReturned)).thenReturn(new byte[] {1, 2, 3 });
-
-        SecurityContext context = repository.loadContext(holder);
-        assertNotNull(context);
-        assertEquals(shouldBeReturned, context);
-        assertNull(context.getAuthentication());
+        verify(securityCookieMarshaller, never()).getBase64EncodedValue(any(SecurityCookie.class));
     }
 
     @Test
-    public void shouldReturnEmptyContextWhenExpiredSessionDateGiven() {
-        DateTimeUtils.setCurrentMillisFixed(5000);
-
-        when(requestMock.getCookies()).thenReturn(new Cookie[]{new Cookie("context", "123&4000")});
-
-        SecurityContext context = repository.loadContext(holder);
-        assertNotNull(context);
-        assertNull(context.getAuthentication());
-        verify(cookieSerializerMock, never()).deserialize(any(byte[].class));
-    }
-
-    @Test
-    public void shouldReturnEmptyContextWhenNoSessionDateGiven() {
-        when(requestMock.getCookies()).thenReturn(new Cookie[]{new Cookie("context", "123")});
-
-        SecurityContext context = repository.loadContext(holder);
-        assertNotNull(context);
-        assertNull(context.getAuthentication());
-        verify(cookieSerializerMock, never()).deserialize(any(byte[].class));
+    public void shouldNotAttachCookieToResponseWhenAnonymousAuthenticationGiven() {
+        SecurityContext securityContext = new SecurityContextImpl();
+        when(responseMock.isCommitted()).thenReturn(false);
+        repository.saveContext(securityContext, requestMock, responseMock);
+        verify(securityCookieMarshaller, never()).getBase64EncodedValue(any(SecurityCookie.class));
     }
 
     @Test
     public void shouldAddSessionValidUntilDateWhenSecurityContextGiven() {
         // GIVEN
         DateTimeUtils.setCurrentMillisFixed(5000);
-        when(cookieSerializerMock.serialize(any(SecurityContext.class))).thenReturn(new byte[] { 1, 2, 3 });
-        ArgumentCaptor<Cookie> cookieArgumentCaptor = ArgumentCaptor.forClass(Cookie.class);
+        ArgumentCaptor<SecurityCookie> cookieArgumentCaptor = ArgumentCaptor.forClass(SecurityCookie.class);
+        when(securityCookieMarshaller.getBase64EncodedValue(any(SecurityCookie.class))).thenReturn("data");
 
         // WHEN
-        repository.saveContext(new SecurityContextImpl(), requestMock, responseMock);
+        repository.saveContext(createNonAnonymousSecurityContext(), requestMock, responseMock);
 
         // THEN
-        verify(responseMock, atLeastOnce()).addCookie(cookieArgumentCaptor.capture());
-        Cookie securityCookie = cookieArgumentCaptor.getValue();
-        assertEquals(DEFAULT_COOKIE_NAME, securityCookie.getName());
-        String cookieValue = securityCookie.getValue();
-        String[] splittedValue = cookieValue.split("&");
-        assertEquals(2, splittedValue.length);
-        assertEquals("1805000", splittedValue[1]);
+        verify(securityCookieMarshaller, atLeastOnce()).getBase64EncodedValue(cookieArgumentCaptor.capture());
+        assertEquals(new DateTime(1805000), cookieArgumentCaptor.getValue().getValidUntil());
     }
 
     @Test
     public void shouldUseConfiguredValidUntilWhenSessionDurationAndSecurityContextGiven() {
+        // GIVEN
+        repository.setSessionDuration(10);
         DateTimeUtils.setCurrentMillisFixed(5000);
-        when(cookieSerializerMock.serialize(any(SecurityContext.class))).thenReturn(new byte[] { 1, 2, 3 });
-        ArgumentCaptor<Cookie> cookieArgumentCaptor = ArgumentCaptor.forClass(Cookie.class);
-        repository.setSessionDuration(1000);
+        ArgumentCaptor<SecurityCookie> cookieArgumentCaptor = ArgumentCaptor.forClass(SecurityCookie.class);
+        when(securityCookieMarshaller.getBase64EncodedValue(any(SecurityCookie.class))).thenReturn("data");
 
         // WHEN
-        repository.saveContext(new SecurityContextImpl(), requestMock, responseMock);
+        repository.saveContext(createNonAnonymousSecurityContext(), requestMock, responseMock);
 
         // THEN
-        verify(responseMock, atLeastOnce()).addCookie(cookieArgumentCaptor.capture());
-        Cookie securityCookie = cookieArgumentCaptor.getValue();
-        assertEquals(DEFAULT_COOKIE_NAME, securityCookie.getName());
-        String cookieValue = securityCookie.getValue();
-        String[] splittedValue = cookieValue.split("&");
-        assertEquals(2, splittedValue.length);
-        assertEquals("1005000", splittedValue[1]);
+        verify(securityCookieMarshaller, atLeastOnce()).getBase64EncodedValue(cookieArgumentCaptor.capture());
+        assertEquals(new DateTime(15000), cookieArgumentCaptor.getValue().getValidUntil());
     }
 
     @Test
     public void shouldRenewSecurityCookieWhenValidContextGiven() {
         DateTimeUtils.setCurrentMillisFixed(3000);
-        SecurityContext shouldBeReturned = new SecurityContextImpl();
-        when(cookieSerializerMock.deserialize(any(byte[].class))).thenReturn(shouldBeReturned);
-        when(requestMock.getCookies()).thenReturn(new Cookie[]{new Cookie("context", "123&4000")});
+        SecurityContext shouldBeReturned = createNonAnonymousSecurityContext();
+        SecurityCookie securityCookie = new SecurityCookie(shouldBeReturned, DateTime.now().plusMinutes(1));
+        when(securityCookieMarshaller.getSecurityCookie(anyString())).thenReturn(securityCookie);
+
+        when(requestMock.getCookies()).thenReturn(new Cookie[]{new Cookie("context", "")});
         when(responseMock.isCommitted()).thenReturn(false);
-        when(cookieSerializerMock.serialize(shouldBeReturned)).thenReturn(new byte[] { 1, 2, 3 });
+        when(securityCookieMarshaller.getBase64EncodedValue(any(SecurityCookie.class))).thenReturn("bla");
         ArgumentCaptor<Cookie> cookieArgumentCaptor = ArgumentCaptor.forClass(Cookie.class);
 
         repository.loadContext(holder);
 
         verify(responseMock, atLeastOnce()).addCookie(cookieArgumentCaptor.capture());
         Cookie cookie = cookieArgumentCaptor.getValue();
-        String durationInMillis = cookie.getValue().split("&")[1];
-        assertEquals("1803000", durationInMillis);
+        assertEquals("bla",cookie.getValue());
         assertEquals(1800, cookie.getMaxAge());
+    }
+
+    private static SecurityContext createNonAnonymousSecurityContext() {
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken("username", "credentials");;
+        context.setAuthentication(authenticationToken);
+        return context;
     }
 }

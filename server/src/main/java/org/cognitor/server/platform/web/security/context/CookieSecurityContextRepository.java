@@ -1,9 +1,11 @@
 package org.cognitor.server.platform.web.security.context;
 
-import org.apache.commons.codec.binary.Base64;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AuthenticationTrustResolver;
+import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
@@ -13,7 +15,6 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
 
 import static org.springframework.util.Assert.notNull;
 
@@ -43,19 +44,17 @@ import static org.springframework.util.Assert.notNull;
  */
 public class CookieSecurityContextRepository implements SecurityContextRepository {
     public static final String DEFAULT_COOKIE_NAME = "context";
-
     private static final Logger LOGGER = LoggerFactory.getLogger(CookieSecurityContextRepository.class);
-    private static final String COOKIE_DATA_ENCODING = "UTF-8";
-    private static final String DELIMITER = "&";
 
-    private final SecurityContextSerializer cookieSerializer;
+    private final AuthenticationTrustResolver authenticationTrustResolver = new AuthenticationTrustResolverImpl();
+    private final SecurityCookieMarshaller securityCookieMarshaller;
 
     private int sessionDuration = 1800;
     private String cookieName = DEFAULT_COOKIE_NAME;
 
-    public CookieSecurityContextRepository(SecurityContextSerializer serializer) {
-        notNull(serializer);
-        this.cookieSerializer = serializer;;
+    public CookieSecurityContextRepository(SecurityCookieMarshaller marshaller) {
+        notNull(marshaller);
+        this.securityCookieMarshaller = marshaller;
     }
 
     @Override
@@ -66,23 +65,20 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
         Cookie securityCookie = getCookieForName(requestResponseHolder.getRequest().getCookies(),
                 cookieName);
 
-        if (noSecurityCookieFound(securityCookie)) {
-            LOGGER.debug("No security cookie found. Returning new context.");
+        if (securityCookie == null) {
+            LOGGER.debug("No security cookie found in request. Returning empty context.");
             return createNewContext();
         }
 
-        String[] cookieValues = securityCookie.getValue().split(DELIMITER);
-        if (cookieValues.length != 2) {
-            LOGGER.debug("Security cookie not valid. Returning new context.");
+        LOGGER.debug("Security cookie found, trying to deserialize");
+        SecurityCookie cookie = securityCookieMarshaller.getSecurityCookie(securityCookie.getValue());
+        if (cookie == null || !cookie.isValid()) {
+            LOGGER.debug("Security cookie was not valid. Returning empty context.");
             return createNewContext();
         }
 
-        if (isExpired(cookieValues[1])) {
-            LOGGER.debug("Security cookie expired. Returning new context.");
-            return createNewContext();
-        }
-
-        SecurityContext context = getSecurityContext(cookieValues[0]);
+        LOGGER.debug("Returning context from cookie.");
+        SecurityContext context = cookie.getSecurityContext();
         renewContext(context, requestResponseHolder);
         return context;
     }
@@ -96,44 +92,9 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
         saveContext(context, holder.getRequest(), holder.getResponse());
     }
 
-    private static boolean isExpired(String expiryTimeInMillis) {
-        try {
-            long millis = Long.parseLong(expiryTimeInMillis);
-            return new DateTime(millis).isBefore(DateTime.now());
-        } catch (NumberFormatException exception) {
-            LOGGER.warn("Expiry time of " + expiryTimeInMillis + " can not be parsed.");
-            return false;
-        }
-    }
-
     private void wrapResponse(HttpRequestResponseHolder requestResponseHolder) {
         requestResponseHolder.setResponse(new SecurityContextRepositoryResponseWrapper(
                 requestResponseHolder.getRequest(), requestResponseHolder.getResponse(), this));
-    }
-
-    private boolean noSecurityCookieFound(Cookie securityCookie) {
-        return securityCookie == null;
-    }
-
-    private SecurityContext getSecurityContext(String serializedContext) {
-        try {
-            SecurityContext context =
-                    cookieSerializer.deserialize(decodeBase64(serializedContext));
-            LOGGER.debug("Successfully loaded security context from cookie");
-            return context;
-        } catch (SerializeException exception) {
-            return createNewContext();
-        }
-    }
-
-
-    private static byte[] decodeBase64(String base64encodedData) {
-        try {
-            return Base64.decodeBase64(base64encodedData.getBytes(COOKIE_DATA_ENCODING));
-        } catch (UnsupportedEncodingException exception) {
-            LOGGER.error("No " + COOKIE_DATA_ENCODING + " support found on this system! Login will not work.", exception);
-            throw new SerializeException("Cookie data cannot be decoded", exception);
-        }
     }
 
     private static SecurityContext createNewContext() {
@@ -145,16 +106,21 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
         if (response.isCommitted()) {
             return;
         }
-        byte[] serializedData = null;
-        try {
-            serializedData = cookieSerializer.serialize(context);
-        } catch (SerializeException exception) {
-            LOGGER.error("Serialization of security context failed. No cookie set.", exception);
+
+        if (isAnonymous(context.getAuthentication())) {
+            LOGGER.debug("Not persisting anonymous authentication to cookie.");
             return;
         }
-        String encodedData = encodeBase64(serializedData);
-        String encodedSessionDate = Long.toString(calculateValidUntil().getMillis());
-        addCookieToResponse(response, encodedData + "&" + encodedSessionDate);
+
+        SecurityCookie cookie = new SecurityCookie(context, calculateValidUntil());
+        String value = securityCookieMarshaller.getBase64EncodedValue(cookie);
+        if (value != null && !value.isEmpty()) {
+            addCookieToResponse(response, value);
+        }
+    }
+
+    private boolean isAnonymous(Authentication authentication) {
+        return authentication == null || authenticationTrustResolver.isAnonymous(authentication);
     }
 
     private DateTime calculateValidUntil() {
@@ -166,16 +132,6 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
         securityCookie.setMaxAge(sessionDuration);
         securityCookie.setPath("/");
         response.addCookie(securityCookie);
-    }
-
-    private String encodeBase64(byte[] serializedData) {
-        try {
-            byte[] base64encodedData = Base64.encodeBase64URLSafe(serializedData);
-            return new String(base64encodedData, COOKIE_DATA_ENCODING);
-        } catch (UnsupportedEncodingException exception) {
-            LOGGER.error("No " + COOKIE_DATA_ENCODING + " support found on this system! Login will not work.", exception);
-            return "";
-        }
     }
 
     @Override
