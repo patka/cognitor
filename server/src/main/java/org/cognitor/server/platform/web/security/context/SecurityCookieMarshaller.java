@@ -8,7 +8,6 @@ import org.springframework.security.core.context.SecurityContext;
 import java.io.*;
 
 import static org.apache.commons.codec.binary.Base64.decodeBase64;
-import static org.apache.commons.codec.binary.Base64.encodeBase64;
 import static org.apache.commons.codec.binary.Base64.encodeBase64URLSafeString;
 import static org.springframework.util.Assert.notNull;
 
