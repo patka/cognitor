@@ -1,6 +1,5 @@
 package org.cognitor.server.platform.web.security.context;
 
-import org.apache.commons.codec.binary.Base64;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,9 +10,9 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextImpl;
 
 import java.io.*;
+import java.nio.charset.Charset;
 
-import static org.apache.commons.codec.binary.Base64.decodeBase64;
-import static org.apache.commons.codec.binary.Base64.encodeBase64URLSafeString;
+import static org.apache.commons.codec.binary.Base64.*;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
@@ -119,7 +118,29 @@ public class SecurityCookieMarshallerTest {
     public void shouldReturnNullWhenHashIsNotValid() {
         when(hashMock.isHashValid(decodeBase64("bla"), decodeBase64("bla"))).thenReturn(false);
         assertNull(marshaller.getSecurityCookie("bla&bla"));
+    }
 
+    @Test
+    public void shouldReturnNullWhenSerializingThrowsException() {
+        SecurityContext context = new SecurityContextImpl();
+        SecurityCookie cookie = new SecurityCookie(context, DateTime.now());
+        when(serializerMock.serialize(context)).thenThrow(new SerializeException("test"));
+        assertNull(marshaller.getBase64EncodedValue(cookie));
+    }
+
+    @Test
+    public void shouldReturnNullWhenDeserializingThrowsException() {
+        when(hashMock.isHashValid(any(byte[].class), any(byte[].class))).thenReturn(true);
+        when(serializerMock.deserialize(any(byte[].class))).thenThrow(new SerializeException("test"));
+        Charset charset = Charset.forName("UTF-8");
+        byte[] value = encodeBase64URLSafe("23blabla".getBytes(charset));
+        assertNull(marshaller.getSecurityCookie(new String(value, charset) + "&hash"));
+    }
+
+    @Test
+    public void shouldReturnNullWhenTooShortValueGiven() {
+        when(hashMock.isHashValid(any(byte[].class), any(byte[].class))).thenReturn(true);
+        assertNull(marshaller.getSecurityCookie("bla&bla"));
     }
 
     @Test

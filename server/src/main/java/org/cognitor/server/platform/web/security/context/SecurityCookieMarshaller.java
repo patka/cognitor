@@ -39,7 +39,10 @@ public class SecurityCookieMarshaller {
             dataStream.flush();
         } catch (IOException exception) {
             LOGGER.error("Unable to write security cookie to data stream.", exception);
-            return "";
+            return null;
+        } catch (SerializeException exception) {
+            LOGGER.error("Serializer threw an exception.", exception);
+            return null;
         }
         byte[] hash = sha512Hash.createHash(byteArrayStream.toByteArray());
         return getBase64EncodedString(byteArrayStream.toByteArray(), hash);
@@ -73,6 +76,9 @@ public class SecurityCookieMarshaller {
     }
 
     private SecurityCookie createSecurityCookieFromData(byte[] serializedData) {
+        if (serializedData.length <= Long.SIZE / 8) {
+            return null;
+        }
         try {
             byte[] serializedContext = new byte[serializedData.length - Long.SIZE / 8];
             ByteArrayInputStream inputStream = new ByteArrayInputStream(serializedData);
@@ -83,6 +89,9 @@ public class SecurityCookieMarshaller {
             return new SecurityCookie(context, new DateTime(validUntil));
         } catch (IOException exception) {
             LOGGER.error("Something really strange happened while deserializing the security cookie.", exception);
+            return null;
+        } catch (SerializeException exception) {
+            LOGGER.error("Serializer threw an exception.", exception);
             return null;
         }
     }
