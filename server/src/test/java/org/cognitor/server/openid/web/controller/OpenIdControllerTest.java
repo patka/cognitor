@@ -53,9 +53,7 @@ public class OpenIdControllerTest {
     @Before
     public void setUp() {
         controller = new OpenIdController(openIdManagerMock);
-        User user = new User("testUser", "testPassword");
-        user.setId("1");
-        userDetails = new UserDetailsImpl(user);
+        userDetails = new UserDetailsImpl("testUser", "testPassword", "1");
     }
 
     // ASSOCIATION

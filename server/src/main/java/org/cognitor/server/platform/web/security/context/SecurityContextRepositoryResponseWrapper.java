@@ -17,6 +17,8 @@ import static org.springframework.util.Assert.notNull;
  *
  * Nevertheless, it is still important to follow the redirect after submit
  * pattern.
+ *
+ * @author Patrick Kranz
  */
 public class SecurityContextRepositoryResponseWrapper
         extends SaveContextOnUpdateOrErrorResponseWrapper {

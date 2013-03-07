@@ -1,6 +1,6 @@
 package org.cognitor.server.platform.security;
 
-import org.cognitor.server.platform.user.domain.User;
+import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -8,15 +8,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static org.springframework.util.Assert.notNull;
+
 /**
  * @author Patrick Kranz
  */
-public class UserDetailsImpl implements UniqueKeyUserDetails {
+public class UserDetailsImpl implements UniqueKeyUserDetails, CredentialsContainer {
     public static final String ROLE_USER = "ROLE_USER";
-    private User user;
+    private String username;
+    private String password;
+    private String uniqueKey;
 
-    public UserDetailsImpl(User user) {
-        this.user = user;
+    public UserDetailsImpl(String username, String password, String uniqueKey) {
+        notNull(username);
+        notNull(uniqueKey);
+        this.username = username;
+        this.password = password;
+        this.uniqueKey = uniqueKey;
     }
 
     @Override
@@ -28,17 +36,17 @@ public class UserDetailsImpl implements UniqueKeyUserDetails {
 
     @Override
     public String getUniqueKey() {
-        return this.user.getId();
+        return uniqueKey;
     }
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return username;
     }
 
     @Override
@@ -59,5 +67,10 @@ public class UserDetailsImpl implements UniqueKeyUserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public void eraseCredentials() {
+        password = null;
     }
 }

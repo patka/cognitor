@@ -40,7 +40,9 @@ public class UserServiceImplTest {
 
     @Test
     public void shouldReturnUserDetailsWhenUserForUsernameGiven() {
-        when(userDaoMock.load("testUser")).thenReturn(new User("testUser", "password"));
+        User user = new User("testUser", "password");
+        user.setId("1");
+        when(userDaoMock.load("testUser")).thenReturn(user);
 
         UserDetails details = service.loadUserByUsername("testUser");
 

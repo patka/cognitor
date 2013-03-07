@@ -6,6 +6,7 @@ import org.cognitor.server.platform.user.persistence.UserDao;
 import org.cognitor.server.platform.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -36,6 +37,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User " + username + " not found.");
         }
-        return new UserDetailsImpl(user);
+        return new UserDetailsImpl(user.getEmail(), user.getPassword(), user.getId());
     }
 }
