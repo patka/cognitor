@@ -9,6 +9,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import static org.springframework.util.Assert.notNull;
 
+/**
+ * This class is wrappes a <code>HttpServletResponse</code>. By doing this
+ * and extending {@link SaveContextOnUpdateOrErrorResponseWrapper} the security
+ * context is written on every redirect or error response which is important
+ * for the security cookie to work correctly.
+ *
+ * Nevertheless, it is still important to follow the redirect after submit
+ * pattern.
+ */
 public class SecurityContextRepositoryResponseWrapper
         extends SaveContextOnUpdateOrErrorResponseWrapper {
 
