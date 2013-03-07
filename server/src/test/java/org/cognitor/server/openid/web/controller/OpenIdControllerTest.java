@@ -3,7 +3,6 @@ package org.cognitor.server.openid.web.controller;
 import org.cognitor.server.openid.web.OpenIdManager;
 import org.cognitor.server.openid.web.OpenIdMode;
 import org.cognitor.server.platform.security.UserDetailsImpl;
-import org.cognitor.server.platform.user.domain.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -206,7 +205,7 @@ public class OpenIdControllerTest {
     @Test
     public void shouldSendDiscoveryDocumentWithSignOnServiceWhenRequestWithIdGiven() throws IOException {
         ByteArrayOutputStream outputStream = attachWriterToResponseMock();
-        Map<String, String> parameters = new HashMap<String, String>();
+        Map<String, String> parameters = new HashMap<>();
         parameters.put("id", "test");
 
         when(openIdManagerMock.getMode(requestMock)).thenReturn(OpenIdMode.DISCOVERY);
