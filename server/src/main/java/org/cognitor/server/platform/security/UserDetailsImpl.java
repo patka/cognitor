@@ -21,14 +21,14 @@ public class UserDetailsImpl implements UniqueKeyUserDetails {
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>(1);
+        List<GrantedAuthority> authorities = new ArrayList<>(1);
         authorities.add(new SimpleGrantedAuthority(ROLE_USER));
         return authorities;
     }
 
     @Override
     public String getUniqueKey() {
-        return this.user.getId().toString();
+        return this.user.getId();
     }
 
     @Override
