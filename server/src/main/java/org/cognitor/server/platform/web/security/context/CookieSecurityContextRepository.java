@@ -74,6 +74,7 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
         SecurityCookie cookie = securityCookieMarshaller.getSecurityCookie(securityCookie.getValue());
         if (cookie == null || !cookie.isValid()) {
             LOGGER.debug("Security cookie was not valid. Returning empty context.");
+            requestResponseHolder.getResponse().addCookie(createRemovalCookie());
             return createNewContext();
         }
 
@@ -81,6 +82,12 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
         SecurityContext context = cookie.getSecurityContext();
         renewContext(context, requestResponseHolder);
         return context;
+    }
+
+    private Cookie createRemovalCookie() {
+        Cookie removalCookie = new Cookie(cookieName, null);
+        removalCookie.setMaxAge(0);
+        return removalCookie;
     }
 
     /**

@@ -132,12 +132,23 @@ public class CookieSecurityContextRepositoryTest {
     public void shouldReturnDeserializedContextWhenValidCookieGiven() {
         final SecurityContext validContext = new SecurityContextImpl();
         final SecurityCookie validCookie = new SecurityCookie(validContext, DateTime.now().plusMinutes(1));
-        when(requestMock.getCookies()).thenReturn(new Cookie[] { new Cookie("context", "") });
+        when(requestMock.getCookies()).thenReturn(new Cookie[]{new Cookie("context", "")});
         when(securityCookieMarshaller.getSecurityCookie(anyString())).thenReturn(validCookie);
         SecurityContext context = repository.loadContext(holder);
         assertEquals(validContext, context);
     }
 
+    @Test
+    public void shouldExpireInvalidCookieWhenInvalidCookieGiven() {
+        when(requestMock.getCookies()).thenReturn(new Cookie[] { new Cookie("context", "")});
+        when(securityCookieMarshaller.getSecurityCookie(anyString())).thenReturn(null);
+        repository.loadContext(holder);
+        ArgumentCaptor<Cookie> cookieArgumentCaptor = ArgumentCaptor.forClass(Cookie.class);
+        verify(responseMock, atLeastOnce()).addCookie(cookieArgumentCaptor.capture());
+        assertEquals(0, cookieArgumentCaptor.getValue().getMaxAge());
+    }
+
+    // save context
     @Test
     public void shouldAttachSecurityCookieToResponseWhenSecurityContextGiven() {
         when(securityCookieMarshaller.getBase64EncodedValue(any(SecurityCookie.class))).thenReturn("data");
