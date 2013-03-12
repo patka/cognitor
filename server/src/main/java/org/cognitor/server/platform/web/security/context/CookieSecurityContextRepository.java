@@ -44,13 +44,18 @@ import static org.springframework.util.Assert.notNull;
  */
 public class CookieSecurityContextRepository implements SecurityContextRepository {
     public static final String DEFAULT_COOKIE_NAME = "context";
+    public static final String DEFAULT_COOKIE_PATH = "/";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CookieSecurityContextRepository.class);
 
     private final AuthenticationTrustResolver authenticationTrustResolver = new AuthenticationTrustResolverImpl();
     private final SecurityCookieMarshaller securityCookieMarshaller;
 
-    private int sessionDuration = 1800;
+    private int sessionDurationSeconds = 1800;
+    private boolean secureCookie = false;
     private String cookieName = DEFAULT_COOKIE_NAME;
+    private String cookiePath = DEFAULT_COOKIE_PATH;
+    private String cookieDomain;
 
     public CookieSecurityContextRepository(SecurityCookieMarshaller marshaller) {
         notNull(marshaller);
@@ -124,13 +129,17 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
     }
 
     private DateTime calculateValidUntil() {
-        return DateTime.now().plusSeconds(sessionDuration);
+        return DateTime.now().plusSeconds(sessionDurationSeconds);
     }
 
     private void addCookieToResponse(HttpServletResponse response, String encodedData) {
         Cookie securityCookie = new Cookie(cookieName, encodedData);
-        securityCookie.setMaxAge(sessionDuration);
-        securityCookie.setPath("/");
+        securityCookie.setMaxAge(sessionDurationSeconds);
+        securityCookie.setPath(cookiePath);
+        securityCookie.setSecure(secureCookie);
+        if (cookieDomain != null && !cookieDomain.isEmpty()) {
+            securityCookie.setDomain(cookieDomain);
+        }
         response.addCookie(securityCookie);
     }
 
@@ -158,7 +167,22 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
         this.cookieName = cookieName;
     }
 
-    public void setSessionDuration(int sessionDurationInSeconds) {
-        this.sessionDuration = sessionDurationInSeconds;
+    public void setCookiePath(String path) {
+        if (path == null || path.isEmpty()) {
+            throw new IllegalArgumentException("Cookie path must not be empty");
+        }
+        this.cookiePath = path;
+    }
+
+    public void setCookieDomain(String domain) {
+        this.cookieDomain = domain;
+    }
+
+    public void setCookieSecure(boolean cookieSecure) {
+        this.secureCookie = cookieSecure;
+    }
+
+    public void setSessionDurationSeconds(int sessionDurationSeconds) {
+        this.sessionDurationSeconds = sessionDurationSeconds;
     }
 }

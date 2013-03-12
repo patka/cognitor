@@ -63,6 +63,16 @@ public class CookieSecurityContextRepositoryTest {
         repository.setCookieName("");
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowExceptionWhenNullAsCookiePathGiven() {
+        repository.setCookiePath(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowExceptionWhenEmptyStringAsCookiePathGiven() {
+        repository.setCookiePath("");
+    }
+
     // Contains method
     @Test
     public void shouldReturnFalseWhenRequestWithNoCookiesGiven() {
@@ -151,6 +161,22 @@ public class CookieSecurityContextRepositoryTest {
     }
 
     @Test
+    public void shouldAttachSecurityCookieWithConfiguredParamteresWhenConfigurationOptionsGiven() {
+        repository.setCookieDomain("testdomain.de");
+        repository.setCookiePath("/relativePath");
+        repository.setCookieSecure(true);
+        when(securityCookieMarshaller.getBase64EncodedValue(any(SecurityCookie.class))).thenReturn("data");
+        ArgumentCaptor<Cookie> cookieArgumentCaptor = ArgumentCaptor.forClass(Cookie.class);
+        repository.saveContext(createNonAnonymousSecurityContext(), requestMock, responseMock);
+        verify(responseMock, atLeastOnce()).addCookie(cookieArgumentCaptor.capture());
+        Cookie securityCookie = cookieArgumentCaptor.getValue();
+        assertEquals("testdomain.de", securityCookie.getDomain());
+        assertEquals("/relativePath", securityCookie.getPath());
+        assertTrue(securityCookie.getSecure());
+    }
+
+
+    @Test
     public void shouldNotAttachCookieToResponseWhenEmptySerializedStringGiven() {
         SecurityContextImpl securityContext = new SecurityContextImpl();
         when(securityCookieMarshaller.getBase64EncodedValue(any(SecurityCookie.class))).thenReturn("");
@@ -202,7 +228,7 @@ public class CookieSecurityContextRepositoryTest {
     @Test
     public void shouldUseConfiguredValidUntilWhenSessionDurationAndSecurityContextGiven() {
         // GIVEN
-        repository.setSessionDuration(10);
+        repository.setSessionDurationSeconds(10);
         DateTimeUtils.setCurrentMillisFixed(5000);
         ArgumentCaptor<SecurityCookie> cookieArgumentCaptor = ArgumentCaptor.forClass(SecurityCookie.class);
         when(securityCookieMarshaller.getBase64EncodedValue(any(SecurityCookie.class))).thenReturn("data");
@@ -238,7 +264,7 @@ public class CookieSecurityContextRepositoryTest {
     private static SecurityContext createNonAnonymousSecurityContext() {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken("username", "credentials");;
+                new UsernamePasswordAuthenticationToken("username", "credentials");
         context.setAuthentication(authenticationToken);
         return context;
     }
