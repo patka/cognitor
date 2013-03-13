@@ -142,6 +142,7 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
         securityCookie.setMaxAge(expiry);
         securityCookie.setPath(cookiePath);
         securityCookie.setSecure(secureCookie);
+        securityCookie.setHttpOnly(true);
         if (cookieDomain != null && !cookieDomain.isEmpty()) {
             securityCookie.setDomain(cookieDomain);
         }

@@ -172,6 +172,7 @@ public class CookieSecurityContextRepositoryTest {
         Cookie securityCookie = cookieArgumentCaptor.getValue();
         assertEquals(DEFAULT_COOKIE_NAME, securityCookie.getName());
         assertEquals("data", securityCookie.getValue());
+        assertTrue(securityCookie.isHttpOnly());
         assertEquals(1800, securityCookie.getMaxAge());
     }
 

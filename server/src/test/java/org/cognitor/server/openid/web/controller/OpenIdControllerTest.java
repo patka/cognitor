@@ -193,7 +193,7 @@ public class OpenIdControllerTest {
         ByteArrayOutputStream outputStream = attachWriterToResponseMock();
 
         when(openIdManagerMock.getMode(requestMock)).thenReturn(OpenIdMode.DISCOVERY);
-        when(requestMock.getParameterMap()).thenReturn(new HashMap());
+        when(requestMock.getParameterMap()).thenReturn(new HashMap<String, String[]>());
         when(requestMock.getRequestURL()).thenReturn(new StringBuffer("http://some.url"));
 
         controller.dispatchOpenIdRequest(requestMock, responseMock, authenticationMock);
@@ -205,8 +205,8 @@ public class OpenIdControllerTest {
     @Test
     public void shouldSendDiscoveryDocumentWithSignOnServiceWhenRequestWithIdGiven() throws IOException {
         ByteArrayOutputStream outputStream = attachWriterToResponseMock();
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put("id", "test");
+        Map<String, String[]> parameters = new HashMap<>();
+        parameters.put("id", new String[] { "test" });
 
         when(openIdManagerMock.getMode(requestMock)).thenReturn(OpenIdMode.DISCOVERY);
         when(requestMock.getParameterMap()).thenReturn(parameters);
