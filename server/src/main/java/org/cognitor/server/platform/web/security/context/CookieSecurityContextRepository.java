@@ -90,9 +90,7 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
     }
 
     private Cookie createRemovalCookie() {
-        Cookie removalCookie = new Cookie(cookieName, null);
-        removalCookie.setMaxAge(0);
-        return removalCookie;
+        return createCookie(null, 0);
     }
 
     /**
@@ -139,14 +137,19 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
         return DateTime.now().plusSeconds(sessionDurationSeconds);
     }
 
-    private void addCookieToResponse(HttpServletResponse response, String encodedData) {
+    private Cookie createCookie(String encodedData, int expiry) {
         Cookie securityCookie = new Cookie(cookieName, encodedData);
-        securityCookie.setMaxAge(sessionDurationSeconds);
+        securityCookie.setMaxAge(expiry);
         securityCookie.setPath(cookiePath);
         securityCookie.setSecure(secureCookie);
         if (cookieDomain != null && !cookieDomain.isEmpty()) {
             securityCookie.setDomain(cookieDomain);
         }
+        return securityCookie;
+    }
+
+    private void addCookieToResponse(HttpServletResponse response, String encodedData) {
+        Cookie securityCookie = createCookie(encodedData, sessionDurationSeconds);
         response.addCookie(securityCookie);
     }
 

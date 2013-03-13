@@ -150,12 +150,16 @@ public class CookieSecurityContextRepositoryTest {
 
     @Test
     public void shouldExpireInvalidCookieWhenInvalidCookieGiven() {
+        repository.setCookiePath("/relativepath");
+        repository.setCookieDomain("testdomain.de");
         when(requestMock.getCookies()).thenReturn(new Cookie[] { new Cookie("context", "")});
         when(securityCookieMarshaller.getSecurityCookie(anyString())).thenReturn(null);
         repository.loadContext(holder);
         ArgumentCaptor<Cookie> cookieArgumentCaptor = ArgumentCaptor.forClass(Cookie.class);
         verify(responseMock, atLeastOnce()).addCookie(cookieArgumentCaptor.capture());
         assertEquals(0, cookieArgumentCaptor.getValue().getMaxAge());
+        assertEquals("/relativepath", cookieArgumentCaptor.getValue().getPath());
+        assertEquals("testdomain.de", cookieArgumentCaptor.getValue().getDomain());
     }
 
     // save context
@@ -172,7 +176,7 @@ public class CookieSecurityContextRepositoryTest {
     }
 
     @Test
-    public void shouldAttachSecurityCookieWithConfiguredParamteresWhenConfigurationOptionsGiven() {
+    public void shouldAttachSecurityCookieWithConfiguredParameteresWhenConfigurationOptionsGiven() {
         repository.setCookieDomain("testdomain.de");
         repository.setCookiePath("/relativePath");
         repository.setCookieSecure(true);
