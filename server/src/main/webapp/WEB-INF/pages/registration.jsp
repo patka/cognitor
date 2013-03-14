@@ -1,9 +1,6 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" session="false" %>
-<%@taglib prefix="forms" uri="http://www.springframework.org/tags/form" %>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ include file="header.jsp"%>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="forms" uri="http://www.springframework.org/tags/form" %>
 
 <html>
 <head>
