@@ -27,7 +27,7 @@ public class LoginController {
 
     @RequestMapping(value = LOGIN_URL, method = RequestMethod.GET)
     public ModelAndView showLogin(HttpServletRequest request) {
-        Map<String, String> model = new HashMap<String, String>();
+        Map<String, String> model = new HashMap<>();
         model.put("actionUrl", getLoginActionUrl(request));
         model.put("registrationPageUrl", getRegistrationPageUrl(request));
         return new ModelAndView("login", model);

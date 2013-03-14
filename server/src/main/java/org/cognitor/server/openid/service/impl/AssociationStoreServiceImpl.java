@@ -65,13 +65,16 @@ public class AssociationStoreServiceImpl implements ServerAssociationStore {
         byte[] macKey = ssoAssociation.getKey();
         DateTime expiration = ssoAssociation.getExpiry();
 
-        if (Association.TYPE_HMAC_SHA1.equals(type)) {
-          association = Association.createHmacSha1(handle, macKey, expiration.toDate());
-        } else if (Association.TYPE_HMAC_SHA256.equals(type)) {
-          association = Association.createHmacSha256(handle, macKey, expiration.toDate());
-        } else {
-          LOGGER.warn("Somehow a handle of type {0} managed to get into the persistent store.", type);
-          return null;
+        switch(type) {
+            case Association.TYPE_HMAC_SHA1:
+                association = Association.createHmacSha1(handle, macKey, expiration.toDate());
+                break;
+            case Association.TYPE_HMAC_SHA256:
+                association = Association.createHmacSha256(handle, macKey, expiration.toDate());
+                break;
+            default:
+                LOGGER.warn("Somehow a handle of type {0} managed to get into the persistent store.", type);
+                return null;
         }
 
         return association;
