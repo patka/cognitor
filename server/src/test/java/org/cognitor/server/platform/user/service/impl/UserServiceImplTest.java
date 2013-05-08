@@ -1,11 +1,12 @@
 package org.cognitor.server.platform.user.service.impl;
 
 import org.cognitor.server.platform.user.domain.User;
-import org.cognitor.server.platform.user.domain.UserAlreadyExistsException;
 import org.cognitor.server.platform.user.persistence.UserDao;
+import org.cognitor.server.platform.user.service.UserAlreadyExistsException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -57,7 +58,7 @@ public class UserServiceImplTest {
     @Test(expected = UserAlreadyExistsException.class)
     public void shouldThrowExceptionWhenAlreadyExistingUserForRegistrationGiven() {
         User testUser = new User("testUser@test.de", "somePass");
-        doThrow(new UserAlreadyExistsException(testUser.getEmail())).when(userDaoMock).save(testUser);
+        when(userDaoMock.exists(testUser)).thenReturn(true);
 
         service.registerUser(testUser);
     }
@@ -69,5 +70,30 @@ public class UserServiceImplTest {
         service.registerUser(testUser);
 
         verify(userDaoMock, times(1)).save(testUser);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowExceptionWhenNullValueForChangePasswordGiven() {
+        service.changePassword(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowExceptionWhenUnknownUserForChangePasswordGiven() {
+        User testUser = new User("test@test.de", "somePass");
+        when(userDaoMock.load("test@test.de")).thenReturn(null);
+        service.changePassword(testUser);
+    }
+
+    @Test
+    public void shouldReturnUpdatedUserWhenExistingUserForChangePasswordGiven() {
+        User testUser = new User("test@test.de", "newPass");
+        User persistedUser = new User("test@test.de", "somePass");
+        when(userDaoMock.load("test@test.de")).thenReturn(persistedUser);
+
+        service.changePassword(testUser);
+
+        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userDaoMock, atLeastOnce()).save(userArgumentCaptor.capture());
+        assertEquals("newPass", userArgumentCaptor.getValue().getPassword());
     }
 }

@@ -1,7 +1,7 @@
 package org.cognitor.server.registration.web.controller;
 
 import org.cognitor.server.platform.user.domain.User;
-import org.cognitor.server.platform.user.domain.UserAlreadyExistsException;
+import org.cognitor.server.platform.user.service.UserAlreadyExistsException;
 import org.cognitor.server.platform.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

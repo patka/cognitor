@@ -10,15 +10,22 @@ import org.cognitor.server.platform.user.domain.User;
  */
 public interface UserDao {
     /**
-     * Saves the given user in the underlying data store.
+     * Saves the given user in the underlying data store. This method
+     * is capable of handling new entities as well as saving new ones.
      *
      * @param user the user that should be saved
      * @return the persisted user entity
-     * @throws org.cognitor.server.platform.user.domain.UserAlreadyExistsException
-     *  when a new user should be created and the provided email address already
-     *  exists
      */
     User save(User user);
+
+    /**
+     * Checks if the given user is already present in the underlying
+     * data store.
+     *
+     * @param user the user to be checked
+     * @return true if the user is known to the system, false otherwise
+     */
+    boolean exists(User user);
 
     /**
      * Loads the user with the given email address.

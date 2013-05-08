@@ -1,4 +1,4 @@
-package org.cognitor.server.platform.user.domain;
+package org.cognitor.server.platform.user.service;
 
 /**
  * This exception is thrown in case somebody tries to create a user
