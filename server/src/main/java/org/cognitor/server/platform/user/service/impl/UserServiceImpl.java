@@ -4,6 +4,7 @@ import org.cognitor.server.platform.security.UserDetailsImpl;
 import org.cognitor.server.platform.user.domain.User;
 import org.cognitor.server.platform.user.persistence.UserDao;
 import org.cognitor.server.platform.user.service.UserAlreadyExistsException;
+import org.cognitor.server.platform.user.service.UserNotFoundException;
 import org.cognitor.server.platform.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -40,7 +41,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         notNull(user);
         User persistentUser = userDao.load(user.getEmail());
         if (persistentUser == null) {
-            throw new IllegalArgumentException("User " + user.getEmail() + " does not exist.");
+            throw new UserNotFoundException(user.getEmail());
         }
         persistentUser.setPassword(user.getPassword());
         return userDao.save(persistentUser);

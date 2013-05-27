@@ -77,7 +77,7 @@ public class UserServiceImplTest {
         service.changePassword(null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = UsernameNotFoundException.class)
     public void shouldThrowExceptionWhenUnknownUserForChangePasswordGiven() {
         User testUser = new User("test@test.de", "somePass");
         when(userDaoMock.load("test@test.de")).thenReturn(null);
