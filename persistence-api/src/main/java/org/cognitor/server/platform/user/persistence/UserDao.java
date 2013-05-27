@@ -11,9 +11,14 @@ import org.cognitor.server.platform.user.domain.User;
 public interface UserDao {
     /**
      * Saves the given user in the underlying data store. This method
-     * is capable of handling new entities as well as saving new ones.
+     * is capable of handling new entities as well as updating existing ones.
      *
-     * @param user the user that should be saved
+     * If a new entity is saved the returned entity will have the <code>Id</code>
+     * property set.
+     *
+     * @param user the user that should be saved. A user with an empty <code>Id</code>
+     *             property is considered to be new. Passing in a user with
+     *             a value in the <code>Id</code> property is updated.
      * @return the persisted user entity
      */
     User save(User user);
