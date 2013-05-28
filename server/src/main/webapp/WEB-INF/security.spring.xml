@@ -24,6 +24,7 @@
     <security:http auto-config="false" entry-point-ref="loginUrlAuthenticationEntryPoint"
                    security-context-repository-ref="cookieSecurityContextRepository" create-session="never">
         <security:intercept-url pattern="/registrationsuccess/**" access="ROLE_USER"/>
+        <security:intercept-url pattern="/account/**" access="ROLE_USER" />
         <security:intercept-url pattern="/sso" access="ROLE_ANONYMOUS, ROLE_USER"/>
         <security:custom-filter ref="authenticationFilter" position="FORM_LOGIN_FILTER" />
         <security:logout invalidate-session="true" logout-url="/logout" logout-success-url="/" delete-cookies="context" />

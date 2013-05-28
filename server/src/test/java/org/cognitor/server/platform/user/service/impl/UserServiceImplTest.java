@@ -3,6 +3,7 @@ package org.cognitor.server.platform.user.service.impl;
 import org.cognitor.server.platform.user.domain.User;
 import org.cognitor.server.platform.user.persistence.UserDao;
 import org.cognitor.server.platform.user.service.UserAlreadyExistsException;
+import org.cognitor.server.platform.user.service.UserNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -77,7 +78,7 @@ public class UserServiceImplTest {
         service.changePassword(null);
     }
 
-    @Test(expected = UsernameNotFoundException.class)
+    @Test(expected = UserNotFoundException.class)
     public void shouldThrowExceptionWhenUnknownUserForChangePasswordGiven() {
         User testUser = new User("test@test.de", "somePass");
         when(userDaoMock.load("test@test.de")).thenReturn(null);

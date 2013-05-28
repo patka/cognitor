@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.List;
 
 import static org.cognitor.server.platform.web.util.UrlUtil.appendQueryToUrl;
@@ -29,6 +29,7 @@ public class RegistrationController {
     public static final String REGISTRATION_URL = "/registration.html";
 
     private static final String REGISTRATION_PAGE = "registration";
+    private static final String REGISTRATION_PAGE_URL_PARAM = "registrationPageUrl";
     private static final String EMAIL_EXISTS_DEFAULT_MESSAGE = "Email already in use";
 
     private UserService userService;
@@ -40,22 +41,23 @@ public class RegistrationController {
 
     @RequestMapping(value = REGISTRATION_URL)
     public ModelAndView enterPage(HttpServletRequest request) {
-        ModelAndView modelAndView = new ModelAndView(REGISTRATION_PAGE);
-        modelAndView.addObject("registrationPageUrl", getRegistrationPageUrl(request));
+        ModelAndView modelAndView = new ModelAndView(REGISTRATION_PAGE, "userFormBean", new UserFormBean());
+        modelAndView.addObject(REGISTRATION_PAGE_URL_PARAM, getRegistrationPageUrl(request));
         return modelAndView;
     }
 
     @RequestMapping(value = REGISTRATION_URL, method = RequestMethod.POST)
-    public ModelAndView registerUser(@Valid @ModelAttribute RegistrationFormBean formBean,
+    public ModelAndView registerUser(@Validated({ UserFormBean.PasswordGroup.class, UserFormBean.EmailGroup.class })
+                                     @ModelAttribute UserFormBean userFormBean,
                                      BindingResult bindingResult,
                                      HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return createErrorView(bindingResult.getFieldErrors(), request);
         }
         try {
-            userService.registerUser(getUserFromBean(formBean));
+            userService.registerUser(getUserFromBean(userFormBean));
         } catch (UserAlreadyExistsException exception) {
-            bindingResult.addError(createEmailExistsError(formBean.getEmail()));
+            bindingResult.addError(createEmailExistsError(userFormBean.getEmail()));
             return createErrorView(bindingResult.getFieldErrors(), request);
         }
 
@@ -65,23 +67,18 @@ public class RegistrationController {
     }
 
     private static FieldError createEmailExistsError(String email) {
-        return new FieldError(RegistrationFormBean.class.getName(), "email",
+        return new FieldError(UserFormBean.class.getName(), "email",
             email, false, new String[] { EMAIL_EXISTS_ERROR_CODE },
             null, EMAIL_EXISTS_DEFAULT_MESSAGE);
     }
 
-    private static User getUserFromBean(RegistrationFormBean formBean) {
+    private static User getUserFromBean(UserFormBean formBean) {
         return new User(formBean.getEmail(), formBean.getPassword());
     }
 
-    @ModelAttribute
-    private static RegistrationFormBean createRegistrationBean() {
-        return new RegistrationFormBean();
-    }
-    
     private static ModelAndView createErrorView(List<FieldError> errors, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView(REGISTRATION_PAGE);
-        modelAndView.addObject("registrationPageUrl", getRegistrationPageUrl(request));
+        modelAndView.addObject(REGISTRATION_PAGE_URL_PARAM, getRegistrationPageUrl(request));
         modelAndView.addObject("errors", errors);
         return modelAndView;
     }

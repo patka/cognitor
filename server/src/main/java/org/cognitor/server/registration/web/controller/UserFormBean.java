@@ -8,17 +8,17 @@ import org.hibernate.validator.constraints.NotEmpty;
 /**
  * @author Patrick Kranz
  */
-@FieldEqual(field = "password", verificationField = "passwordVerification")
-public class RegistrationFormBean {
+@FieldEqual(field = "password", verificationField = "passwordVerification", groups = UserFormBean.PasswordGroup.class)
+public class UserFormBean {
 
-    @NotEmpty
-    @Email
+    @NotEmpty(groups = EmailGroup.class)
+    @Email(groups = EmailGroup.class)
     private String email;
 
-    @Length(min = 6, max = 100)
+    @Length(min = 6, max = 100, groups = PasswordGroup.class)
     private String password;
 
-    @NotEmpty
+    @NotEmpty(groups = PasswordGroup.class)
     private String passwordVerification;
 
     public String getEmail() {
@@ -44,4 +44,7 @@ public class RegistrationFormBean {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public interface PasswordGroup {}
+    public interface EmailGroup {}
 }
