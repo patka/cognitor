@@ -13,6 +13,7 @@
         <module>sampleConsumer</module>
         <module>persistence-api</module>
         <module>persistence-jpa</module>
+        <module>persistence-mongodb</module>
     </modules>
 
     <properties>
