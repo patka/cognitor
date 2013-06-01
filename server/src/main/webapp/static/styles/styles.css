@@ -39,3 +39,12 @@ div.error {
 #login-help {
     font-size: 80%;
 }
+
+#footer {
+    position: absolute;
+    bottom: 0px;
+    text-align: center;
+    font-size: 80%;
+    width: 99%;
+    height: 3em;
+}
