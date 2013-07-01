@@ -10,9 +10,14 @@
             <h1><spring:message code="changePassword.title" htmlEscape="true"/></h1>
             <forms:form method="POST" modelAttribute="userFormBean">
                 <forms:errors cssClass="error" path="password" htmlEscape="true" element="div"/>
-                <div id="changePassword">
-                    <p><spring:message code="Password"/>:<forms:password id="password" path="password" /></p>
-                    <p><spring:message code="Password.Verification"/>:<forms:password path="passwordVerification"/></p>
+                <div id="login">
+                    <p>
+                        <input type="password" id="password" name="password" placeholder="<spring:message code="Password"/>"/>
+                    </p>
+                    <p>
+                        <input type="password" id="passwordVerification" name="passwordVerification"
+                                placeholder="<spring:message code="Password.Verification"/>"/>
+                    </p>
                     <input type="submit" value="<spring:message code="changePassword.message" htmlEscape="true"/>" />
                 </div>
             </forms:form>
