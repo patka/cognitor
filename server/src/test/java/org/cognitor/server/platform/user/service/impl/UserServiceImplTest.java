@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -26,11 +27,14 @@ public class UserServiceImplTest {
     @Mock
     private UserDao userDaoMock;
 
+    @Mock
+    private PasswordEncoder passwordEncoderMock;
+
     private UserServiceImpl service;
 
     @Before
     public void setUp() {
-        service = new UserServiceImpl(userDaoMock);
+        service = new UserServiceImpl(userDaoMock, passwordEncoderMock);
     }
 
     @Test(expected = UsernameNotFoundException.class)
@@ -67,9 +71,11 @@ public class UserServiceImplTest {
     @Test
     public void shouldCreateNewUserWhenNewUserForRegistrationGiven() {
         User testUser = new User("testUser", "somePass");
+        when(passwordEncoderMock.encode("somePass")).thenReturn("encodedPass");
 
         service.registerUser(testUser);
 
+        assertEquals("encodedPass", testUser.getPassword());
         verify(userDaoMock, times(1)).save(testUser);
     }
 
@@ -90,11 +96,12 @@ public class UserServiceImplTest {
         User testUser = new User("test@test.de", "newPass");
         User persistedUser = new User("test@test.de", "somePass");
         when(userDaoMock.load("test@test.de")).thenReturn(persistedUser);
+        when(passwordEncoderMock.encode("newPass")).thenReturn("encodedNewPass");
 
         service.changePassword(testUser);
 
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userDaoMock, atLeastOnce()).save(userArgumentCaptor.capture());
-        assertEquals("newPass", userArgumentCaptor.getValue().getPassword());
+        assertEquals("encodedNewPass", userArgumentCaptor.getValue().getPassword());
     }
 }

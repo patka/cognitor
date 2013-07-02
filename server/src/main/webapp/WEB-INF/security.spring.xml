@@ -78,6 +78,12 @@
 
     <bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
         <property name="userDetailsService" ref="UserServiceImpl" />
+        <property name="passwordEncoder" ref="passwordEncoder" />
+    </bean>
+
+    <bean id="passwordEncoder" class="org.cognitor.server.platform.security.password.PasswordEncoderFactory"
+          factory-method="getPasswordEncoder" >
+        <constructor-arg index="0" value="${password.hashAlgorithm}" />
     </bean>
 
     <security:authentication-manager alias="authenticationManager" erase-credentials="true">

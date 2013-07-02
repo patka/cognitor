@@ -11,6 +11,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static org.springframework.util.Assert.notNull;
@@ -22,10 +23,12 @@ import static org.springframework.util.Assert.notNull;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private UserDao userDao;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao) {
+    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -33,6 +36,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (userDao.exists(user)) {
             throw new UserAlreadyExistsException(user.getEmail());
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userDao.save(user);
     }
 
@@ -43,7 +47,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (persistentUser == null) {
             throw new UserNotFoundException(user.getEmail());
         }
-        persistentUser.setPassword(user.getPassword());
+        persistentUser.setPassword(passwordEncoder.encode(user.getPassword()));
         return userDao.save(persistentUser);
     }
 
