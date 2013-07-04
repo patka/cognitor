@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.StandardPasswordEncoder;
  */
 public class PasswordEncoderFactory {
     public static final String BCRYPT_ENCODER = "bcrypt";
-    public static final String STANDARD_ENCODER = "standard";
+    public static final String SHA_256_ENCODER = "sha_256";
     public static final String NO_ENCODER = "no_hash";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PasswordEncoderFactory.class);
@@ -31,7 +31,7 @@ public class PasswordEncoderFactory {
                 return new BCryptPasswordEncoder();
             case NO_ENCODER:
                 return NoOpPasswordEncoder.getInstance();
-            case STANDARD_ENCODER:
+            case SHA_256_ENCODER:
                 return new StandardPasswordEncoder();
             default: {
                 LOGGER.error("No password encoder for algorithm " + algorithm + " found. "

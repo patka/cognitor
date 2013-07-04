@@ -50,8 +50,8 @@ public class PasswordEncoderFactoryTest {
     }
 
     @Test
-    public void shouldReturnStandardPasswordEncoderWhenStandardGiven() {
-        PasswordEncoder encoder = PasswordEncoderFactory.getPasswordEncoder("standard");
+    public void shouldReturnStandardPasswordEncoderWhenSha256Given() {
+        PasswordEncoder encoder = PasswordEncoderFactory.getPasswordEncoder("sha_256");
         assertTrue(encoder instanceof StandardPasswordEncoder);
     }
 
