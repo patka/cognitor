@@ -81,7 +81,7 @@
         <property name="passwordEncoder" ref="passwordEncoder" />
     </bean>
 
-    <bean id="passwordEncoder" class="org.cognitor.server.platform.security.password.PasswordEncoderFactory"
+    <bean id="passwordEncoder" class="org.cognitor.server.platform.security.PasswordEncoderFactory"
           factory-method="getPasswordEncoder" >
         <constructor-arg index="0" value="${password.hashAlgorithm}" />
     </bean>
