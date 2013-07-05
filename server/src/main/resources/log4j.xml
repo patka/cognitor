@@ -10,15 +10,11 @@
     </appender>
 
     <logger name="org.cognitor">
-        <level value="debug" />
+        <level value="info" />
     </logger>
     
     <logger name="org.springframework.security">
         <level value="info" />
-    </logger>
-
-    <logger name="org.springframework.data">
-        <level value="debug" />
     </logger>
 
     <root>
