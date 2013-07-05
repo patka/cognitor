@@ -11,7 +11,7 @@
             <div id="options">
                 <ul>
                     <li><a href="/account/changePassword.html">
-                            <spring:message code="changePassword.title" htmlEscape="true"/>
+                            <spring:message code="changePassword.linkTitle" htmlEscape="true"/>
                         </a>
                     </li>
                 </ul>
