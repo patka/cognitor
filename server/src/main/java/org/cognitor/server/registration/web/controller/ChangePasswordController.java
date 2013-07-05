@@ -1,5 +1,6 @@
 package org.cognitor.server.registration.web.controller;
 
+import org.cognitor.server.account.web.controller.AccountController;
 import org.cognitor.server.platform.user.domain.User;
 import org.cognitor.server.platform.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class ChangePasswordController {
         User user = mapFromFormBean(formBean);
         user.setEmail(authentication.getName());
         userService.changePassword(user);
-        return new ModelAndView(PAGE);
+        return new ModelAndView("redirect:" + AccountController.ACCOUNT_URL);
     }
 
     private User mapFromFormBean(UserFormBean formBean) {

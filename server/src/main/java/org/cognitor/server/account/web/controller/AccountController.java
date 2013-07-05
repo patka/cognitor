@@ -10,8 +10,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
  */
 @Controller
 public class AccountController {
+    public static final String ACCOUNT_URL = "/account";
     private static final String ACCOUNT_PAGE = "manageAccount";
-    private static final String ACCOUNT_URL = "/account";
 
     @RequestMapping(value = ACCOUNT_URL, method= GET)
     public String getManageAccountPage() {
