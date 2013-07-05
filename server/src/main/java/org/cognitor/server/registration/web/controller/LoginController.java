@@ -3,7 +3,6 @@ package org.cognitor.server.registration.web.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +20,6 @@ import static org.springframework.util.StringUtils.hasText;
 public class LoginController {
     public static final String LOGIN_URL = "/";
     public static final String LOGIN_FAILED_URL = "/loginFailed.html";
-    public static final String LOGIN_SUCCESS_URL = "loginSuccess.html";
 
     private String securityChainUrl = "/login";
 
@@ -38,12 +36,6 @@ public class LoginController {
         ModelAndView model = showLogin(request);
         model.addObject("error", "login.badCredentials");
         return model;
-    }
-
-    @RequestMapping(value = LOGIN_SUCCESS_URL)
-    @ResponseBody
-    public String showLoginSuccessPage() {
-        return "Success";
     }
 
     public void setSecurityChainUrl(String url) {
