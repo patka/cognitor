@@ -1,8 +1,8 @@
-<%@include file="header.jsp"%>
+<%@include file="includes/header.jsp"%>
 <html>
     <head>
+        <%@include file="includes/styles.jsp"%>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="<spring:url value="/static/styles/styles.css" htmlEscape="true"/>" />
         <title><spring:message code="manageAccount.title" htmlEscape="true"/></title>
     </head>
     <body>
@@ -17,6 +17,6 @@
                 </ul>
             </div>
         </div>
-        <%@include file="footer.jsp"%>
+        <%@include file="includes/footer.jsp"%>
     </body>
 </html>

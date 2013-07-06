@@ -1,8 +1,8 @@
-<%@ include file="header.jsp"%>
+<%@ include file="includes/header.jsp"%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="<spring:url value="/static/styles/styles.css" htmlEscape="true"/>"/>
+        <%@include file="includes/styles.jsp"%>
         <title><spring:message code="registration.title" htmlEscape="true"/></title>
     </head>
     <body>
@@ -31,6 +31,6 @@
                 </tr>
             </table>
         </forms:form>
-        <%@ include file="footer.jsp" %>
+        <%@ include file="includes/footer.jsp" %>
     </body>
 </html>

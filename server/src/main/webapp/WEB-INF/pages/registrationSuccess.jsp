@@ -1,9 +1,9 @@
-<%@ include file="header.jsp"%>
+<%@ include file="includes/header.jsp"%>
 
 <html>
     <head>
         <title><spring:message code="registrationSuccess.title" htmlEscape="true"/></title>
-        <link rel="stylesheet" type="text/css" href="/static/styles/styles.css" />
+        <%@include file="includes/styles.jsp"%>
     </head>
     <body>
         <h1><spring:message code="registrationSuccess.title" htmlEscape="true"/></h1>
@@ -13,6 +13,6 @@
         <p>
             <a href="${loginUrl}"><spring:message code="registrationSuccess.gotoLogin" htmlEscape="true" /></a>
         </p>
-        <%@ include file="footer.jsp" %>
+        <%@ include file="includes/footer.jsp" %>
     </body>
 </html>
