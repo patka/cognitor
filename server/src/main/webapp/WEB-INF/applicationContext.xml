@@ -41,6 +41,9 @@
     <!-- Instantiate the web controllers -->
     <mvc:annotation-driven/>
 
+    <!-- resolve static content -->
+    <mvc:resources mapping="/static/**" location="/static/"/>
+
     <!-- View resolver -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/pages/"/>
