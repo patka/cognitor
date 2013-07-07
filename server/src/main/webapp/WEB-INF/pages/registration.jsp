@@ -26,7 +26,7 @@
                 </tr>
                 <tr>
                     <td colspan="2" align="right">
-                        <input type="submit" value="<spring:message code="registration.signup" htmlEscape="true"/>" />
+                        <input type="submit" class="btn" value="<spring:message code="registration.signup" htmlEscape="true"/>" />
                     </td>
                 </tr>
             </table>

@@ -18,7 +18,7 @@
                         <input type="password" id="passwordVerification" name="passwordVerification"
                                 placeholder="<spring:message code="Password.Verification"/>"/>
                     </p>
-                    <input type="submit" value="<spring:message code="changePassword.message" htmlEscape="true"/>" />
+                    <input type="submit" class="btn" value="<spring:message code="changePassword.message" htmlEscape="true"/>" />
                 </div>
             </forms:form>
         </div>
