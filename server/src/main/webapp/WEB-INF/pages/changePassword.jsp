@@ -6,6 +6,7 @@
         <title><spring:message code="changePassword.title" htmlEscape="true"/></title>
     </head>
     <body>
+    <%@include file="includes/navigation.jsp"%>
         <div id="content">
             <h1><spring:message code="changePassword.title" htmlEscape="true"/></h1>
             <forms:form method="POST" modelAttribute="userFormBean">

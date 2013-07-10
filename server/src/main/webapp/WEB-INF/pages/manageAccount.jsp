@@ -6,6 +6,7 @@
         <title><spring:message code="manageAccount.title" htmlEscape="true"/></title>
     </head>
     <body>
+    <%@include file="includes/navigation.jsp"%>
         <div id="content">
             <h1><spring:message code="manageAccount.title" htmlEscape="true"/></h1>
             <div id="options">

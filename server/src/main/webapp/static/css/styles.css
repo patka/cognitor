@@ -1,19 +1,15 @@
 body {
-    font-family: sans-serif;
-    background: #eee;
-    padding-top: 10px;
+    padding-top: 60px;
 }
 h1 {
-    color: #377BA8;
-    font-family: 'Georgia', serif;
     margin: 0;
-    border-bottom: 2px solid #eee;
+    padding-bottom: 5;
     text-align: center;
 }
 
 dd {
     text-align: center;
-    border-bottom: 8px solid #eee;
+    border-bottom: 8 solid #eee;
     font-family: sans-serif
 }
 dt {
@@ -27,8 +23,8 @@ div.error {
 .error {
 	color: #ff0000;
     font-family: 'Georgia', serif;
-	padding: 4px;
-	margin: 8px;
+	padding: 4;
+	margin: 8;
 }
 
 #login {
@@ -43,7 +39,7 @@ div.error {
 
 #footer {
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     text-align: center;
     font-size: 80%;
     width: 99%;
