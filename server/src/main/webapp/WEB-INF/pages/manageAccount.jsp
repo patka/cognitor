@@ -7,7 +7,7 @@
     </head>
     <body>
     <%@include file="includes/navigation.jsp"%>
-        <div id="content">
+        <div id="content" class="container">
             <h1><spring:message code="manageAccount.title" htmlEscape="true"/></h1>
             <div id="options">
                 <ul>

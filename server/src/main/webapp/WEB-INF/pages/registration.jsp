@@ -6,7 +6,7 @@
         <title><spring:message code="registration.title" htmlEscape="true"/></title>
     </head>
     <body>
-        <h1 align="center"><spring:message code="registration.title" htmlEscape="true"/></h1>
+        <h1><spring:message code="registration.title" htmlEscape="true"/></h1>
 
         <forms:form method="POST" modelAttribute="userFormBean" action="${registrationPageUrl}">
             <forms:errors cssClass="error" path="password" htmlEscape="true" element="div"/>
@@ -26,7 +26,7 @@
                 </tr>
                 <tr>
                     <td colspan="2" align="right">
-                        <input type="submit" class="btn" value="<spring:message code="registration.signup" htmlEscape="true"/>" />
+                        <input type="submit" class="btn btn-primary" value="<spring:message code="registration.signup" htmlEscape="true"/>" />
                     </td>
                 </tr>
             </table>

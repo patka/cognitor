@@ -7,7 +7,7 @@
     </head>
     <body>
     <%@include file="includes/navigation.jsp"%>
-        <div id="content">
+        <div id="content" class="container">
             <h1><spring:message code="changePassword.title" htmlEscape="true"/></h1>
             <forms:form method="POST" modelAttribute="userFormBean">
                 <forms:errors cssClass="error" path="password" htmlEscape="true" element="div"/>
@@ -19,7 +19,7 @@
                         <input type="password" id="passwordVerification" name="passwordVerification"
                                 placeholder="<spring:message code="Password.Verification"/>"/>
                     </p>
-                    <input type="submit" class="btn" value="<spring:message code="changePassword.message" htmlEscape="true"/>" />
+                    <input type="submit" class="btn btn-primary" value="<spring:message code="changePassword.message" htmlEscape="true"/>" />
                 </div>
             </forms:form>
         </div>

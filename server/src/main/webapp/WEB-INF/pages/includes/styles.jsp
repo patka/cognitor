@@ -1,2 +1,2 @@
-<link rel="stylesheet" type="text/css" href="<spring:url value="/static/css/bootstrap.min-2.3.2.css" htmlEscape="true"/>"/>
+<link rel="stylesheet" type="text/css" href="<spring:url value="/static/css/bootstrap.css" htmlEscape="true"/>"/>
 <link rel="stylesheet" type="text/css" href="<spring:url value="/static/css/styles.css" htmlEscape="true"/>"/>

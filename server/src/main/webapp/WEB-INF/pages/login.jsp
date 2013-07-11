@@ -18,7 +18,7 @@
                 </core:if>
                 <p><input type="text" id="username" name="username" placeholder="<spring:message code="Email" htmlEscape="true"/>"/></p>
                 <p><input type="password" id="password" name="password" placeholder="<spring:message code="Password" htmlEscape="true"/>"/></p>
-                <p class="submit"><input type="submit" value="Login" class="btn"/></p>
+                <p class="submit"><input type="submit" value="Login" class="btn btn-primary"/></p>
                 <div id="login-help">
                     <p><spring:message code="login.noAccount" htmlEscape="true"/>
                     <a href="${registrationPageUrl}"><spring:message code="login.signUp" htmlEscape="true"/></a>
