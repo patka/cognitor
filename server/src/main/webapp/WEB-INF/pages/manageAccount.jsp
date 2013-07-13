@@ -1,8 +1,7 @@
 <%@include file="includes/header.jsp"%>
 <html>
     <head>
-        <%@include file="includes/styles.jsp"%>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <%@include file="includes/head.jsp"%>
         <title><spring:message code="manageAccount.title" htmlEscape="true"/></title>
     </head>
     <body>

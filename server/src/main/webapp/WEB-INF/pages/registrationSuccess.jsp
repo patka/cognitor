@@ -3,7 +3,7 @@
 <html>
     <head>
         <title><spring:message code="registrationSuccess.title" htmlEscape="true"/></title>
-        <%@include file="includes/styles.jsp"%>
+        <%@include file="includes/head.jsp"%>
     </head>
     <body>
         <div id="content" class="container">
