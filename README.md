@@ -1,4 +1,4 @@
-Cognitor
+Cognitor  [![Build Status](https://travis-ci.org/patka/cognitor.png)](https://travis-ci.org/patka/cognitor)
 ========
 
 Cognitor is an OpenID based Single Sign On Service (SSO) for web applications.
