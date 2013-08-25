@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.cognitor.server.platform.user.service;
 
 import org.cognitor.server.platform.user.domain.User;
