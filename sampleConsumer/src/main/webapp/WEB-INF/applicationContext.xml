@@ -4,15 +4,21 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
+    <!-- configure that components are found by annotations-->
     <mvc:annotation-driven />
 
+    <!-- scan for components like controllers -->
     <context:component-scan base-package="org.cognitor"/>
 
+    <!-- configure location of jsp pages -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/pages/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <bean id="openIdManager" class="org.openid4java.consumer.ConsumerManager" />
+    <!-- configure to search in static folder for styles etc. -->
+    <mvc:resources mapping="/static/**" location="/static/"/>
 
+    <!-- create an OpenIdManager -->
+    <bean id="openIdManager" class="org.openid4java.consumer.ConsumerManager" />
 </beans>
