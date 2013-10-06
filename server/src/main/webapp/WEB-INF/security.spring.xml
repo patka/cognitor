@@ -32,9 +32,7 @@
     <bean id="cookieSecurityContextRepository" class="org.cognitor.server.platform.web.security.context.CookieSecurityContextRepository">
         <constructor-arg>
             <bean class="org.cognitor.server.platform.web.security.context.SecurityCookieMarshaller">
-                <constructor-arg>
-                    <bean class="org.cognitor.server.platform.web.security.context.SecurityContextSerializer" />
-                </constructor-arg>
+                <constructor-arg ref="serializer" />
                 <constructor-arg>
                     <bean class="org.cognitor.server.platform.web.security.context.Sha512Hash">
                         <constructor-arg value="${securityCookie.hashing.salt}" />
