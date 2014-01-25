@@ -94,6 +94,19 @@ public class ConsumerController {
         Identifier identifier = verification.getVerifiedId();
         ModelAndView modelAndView = new ModelAndView("answer");
         modelAndView.addObject("identifier", identifier);
+        if (identifier != null) {
+            modelAndView.addObject("uniqueId", getUniqueId(identifier.getIdentifier()));
+        } else {
+            modelAndView.addObject("uniqueId", "no Id received");
+        }
         return modelAndView;
+    }
+
+    private static String getUniqueId(String identifier) {
+        int index = identifier.indexOf("id=");
+        if (index > 0) {
+            return identifier.substring(index + 3);
+        }
+        return "";
     }
 }

@@ -19,10 +19,6 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    <welcome-file-list>
-        <welcome-file></welcome-file>
-    </welcome-file-list>
-
     <session-config>
         <session-timeout>
             30
