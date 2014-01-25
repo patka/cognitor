@@ -21,6 +21,9 @@ public class UserFormBean {
     @NotEmpty(groups = PasswordGroup.class)
     private String passwordVerification;
 
+    @NotEmpty(groups = ChangePasswordGroup.class)
+    private String currentPassword;
+
     public String getEmail() {
         return email;
     }
@@ -37,6 +40,14 @@ public class UserFormBean {
         this.passwordVerification = passwordVerification;
     }
 
+    public void setCurrentPassword(String currentPassword) {
+        this.currentPassword = currentPassword;
+    }
+
+    public String getCurrentPassword() {
+        return this.currentPassword;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -47,4 +58,5 @@ public class UserFormBean {
 
     public interface PasswordGroup {}
     public interface EmailGroup {}
+    public interface ChangePasswordGroup {}
 }

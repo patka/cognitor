@@ -11,7 +11,11 @@
             <h1><spring:message code="changePassword.title" htmlEscape="true"/></h1>
             <forms:form method="POST" modelAttribute="userFormBean">
                 <forms:errors cssClass="error" path="password" htmlEscape="true" element="div"/>
+                <forms:errors cssClass="error" path="currentPassword" htmlEscape="true" element="div"/>
                 <div id="login">
+                    <p>
+                        <input type="password" id="currentPassword" name="currentPassword" placeholder="<spring:message code="changePassword.currentPassword"/>" />
+                    </p>
                     <p>
                         <input type="password" id="password" name="password" placeholder="<spring:message code="Password"/>"/>
                     </p>

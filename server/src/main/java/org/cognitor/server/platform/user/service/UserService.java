@@ -20,5 +20,5 @@ public interface UserService {
      * Changes the password for the given user with the password provided
      * in the given {@link User} object.
      */
-    User changePassword(User user);
+    User changePassword(User user, String currentPassword);
 }

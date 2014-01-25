@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -81,14 +82,30 @@ public class UserServiceImplTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionWhenNullValueForChangePasswordGiven() {
-        service.changePassword(null);
+        service.changePassword(null, "currentPassword");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowExceptionWhenNullValueForCurrentPasswordGiven() {
+        service.changePassword(new User("test@test.de", "somePass"), null);
     }
 
     @Test(expected = UserNotFoundException.class)
     public void shouldThrowExceptionWhenUnknownUserForChangePasswordGiven() {
         User testUser = new User("test@test.de", "somePass");
         when(userDaoMock.load("test@test.de")).thenReturn(null);
-        service.changePassword(testUser);
+        service.changePassword(testUser, "somePass");
+    }
+
+    @Test(expected = BadCredentialsException.class)
+    public void shouldThrowExceptionWhenWrongCurrentPasswordGiven() {
+        User testUser = new User("test@test.de", "newPass");
+        User persistedUser = new User("test@test.de", "somePass");
+        when(userDaoMock.load("test@test.de")).thenReturn(persistedUser);
+        when(passwordEncoderMock.encode("newPass")).thenReturn("encodedNewPass");
+        when(passwordEncoderMock.matches("somePass", "wrongPassword")).thenReturn(false);
+
+        service.changePassword(testUser, "wrongPassword");
     }
 
     @Test
@@ -97,8 +114,9 @@ public class UserServiceImplTest {
         User persistedUser = new User("test@test.de", "somePass");
         when(userDaoMock.load("test@test.de")).thenReturn(persistedUser);
         when(passwordEncoderMock.encode("newPass")).thenReturn("encodedNewPass");
+        when(passwordEncoderMock.matches("somePass", "somePass")).thenReturn(true);
 
-        service.changePassword(testUser);
+        service.changePassword(testUser, "somePass");
 
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userDaoMock, atLeastOnce()).save(userArgumentCaptor.capture());
