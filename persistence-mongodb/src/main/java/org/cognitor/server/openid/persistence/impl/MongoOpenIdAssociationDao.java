@@ -36,7 +36,7 @@ public class MongoOpenIdAssociationDao implements OpenIdAssociationDao {
 
     @Override
     public void delete(String handle) {
-        mongoTemplate.remove(new Query(where(HANDLE_FIELD).is(HANDLE_FIELD)), OpenIdAssociation.class);
+        mongoTemplate.remove(new Query(where(HANDLE_FIELD).is(handle)), OpenIdAssociation.class);
     }
 
     @Override
